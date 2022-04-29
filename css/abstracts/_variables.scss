@@ -1,0 +1,69 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass variables.
+// -----------------------------------------------------------------------------
+
+// colors 
+// primary
+$color-primary: #F1CDB3;
+$color-primary-light: #FDDCC4;
+// shades of gray
+$color-light-xl: #FFFFFF;
+$color-light-l: #F6F6F6;
+$color-light-s: #FAFAFA;
+$color-dark-s: #CDCDCD;
+$color-dark-m: #B2B2B2;
+$color-dark-l: #545454;
+$color-dark-xl: #4C4C4C;
+$color-dark-2xl: #444444;
+$color-dark-3xl: #292929;
+$color-transparent: transparent;
+// background
+$start-screen-gradient-background: #211F20;
+$start-screen-gradient-start: #5B483A;
+$start-screen-gradient-end: #262425;
+//blackout
+$color-blackout: rgba(41, 41, 41, 0.6);
+
+/// Relative or absolute URL where all assets are served from
+$base-url: '../assets/' !default;
+
+/// Breakpoints
+// $breakpoint-small: 320px !default;
+// $breakpoint-medium: 768px !default;
+// $breakpoint-large: 1280px !default;
+$breakpoint-small: 319.9px !default;
+$breakpoint-medium: 767.9px !default;
+$breakpoint-large: 1279.9px !default;
+
+// width and height of project
+$content-width: 1200px;
+$content-width-medium: 708px;
+$content-width-small: 300px;
+
+$width-logo: 190px;
+$height-logo: 60px;
+
+$width-navigation: 443px;
+$height-navigation: 27px;
+
+$size-help-icon: 60px;
+$height-button: 52px;
+
+$width-pet-card: 270px;
+$height-pet-card: 435px;
+
+$carousel-wrapper-large: 990px;
+$carousel-wrapper-medium: 580px;
+$carousel-wrapper-small: 270px;
+
+$page-wrapper-large: 1200px;
+$page-wrapper-medium: 580px;
+$page-wrapper-small: 270px;
+
+$width-modal-large: 900px;
+$width-modal-medium: 630px;
+$width-modal-small: 240px;
+
+$height-modal-large: 500px;
+$height-modal-medium: 350px;
+$height-modal-small: 341px;
