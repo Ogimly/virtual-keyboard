@@ -58,124 +58,26 @@
     text-decoration: none; 
     color: $color;
 }
-/// /* logo_subtitle */
-@mixin text-logo-subtitle($color) {
-    font-family: 'Arial';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 13px;
-    line-height: 15px;
-    letter-spacing: 0.1em;
-    text-decoration: none; 
-    color: $color;
-}
-/// /* h2 */
-@mixin text-h2($color) {
-    font-family: 'Georgia';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 44px;
-    line-height: 130%;
-    color: $color;
-}
-/// /* h3 */
-@mixin text-h3($color) {
-    font-family: 'Georgia';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 35px;
-    line-height: 130%;
-    letter-spacing: 0.06em;
-    color: $color;
-}
-/// /* h3-mobile */
-@mixin text-h3-mobile($color) {
-    font-family: 'Georgia';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 25px;
-    line-height: 130%;
-    letter-spacing: 0.06em;
-    color: $color;
-}
-/// /* h4 */
-@mixin text-h4($color) {
-    font-family: 'Georgia';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 115%;
-    letter-spacing: 0.06em;
-    color: $color;
-}
-/// /* h5 */
-@mixin text-h5($color) {
-    font-family: 'Georgia';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 15px;
-    line-height: 110%;
-    letter-spacing: 0.06em;
-    color: $color;
-}
-/// /* h5-modal */
-@mixin text-h5-modal($color) {
-    font-family: 'Georgia';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 13px;
-    line-height: 110%;
-    letter-spacing: 0.06em;
-    color: $color;
-}
 /// /* paragraph-l */
 @mixin text-paragraph-l($color) {
-    font-family: 'Arial';
+    font-family: 'Georgia';
     font-style: normal;
     font-weight: 400;
     font-size: 15px;
     line-height: 160%;
-    color: $color;
-}
-/// /* paragraph-mobile-menu */
-@mixin text-paragraph-mobile-menu($color) {
-    font-family: 'Arial';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 32px;
-    line-height: 160%;
-    color: $color;
-}
-/// /* donation-description */
-@mixin text-donation-description($color) {
-    font-family: 'Arial';
-    font-style: italic;
-    font-weight: 400;
-    font-size: 11px;
-    line-height: 18px;
+    letter-spacing: 0.06em;
+    text-decoration: none; 
     color: $color;
 }
 /// /* button-primary, button-secondary */
 @mixin text-button($color) {
-    font-family: 'Georgia';
+    font-family: 'Arial';
     font-style: normal;
     font-weight: 400;
-    font-size: 17px;
+    font-size: 15px;
     line-height: 130%;
     letter-spacing: 0.06em;
     text-decoration: none; 
-    text-align: center;
-    color: $color;
-}
-/// /* pets-card-title */
-@mixin text-pets-card($color) {
-    font-family: 'Georgia';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 23px;
-    letter-spacing: 0.06em;
-    text-align: center;
     color: $color;
 }
 
