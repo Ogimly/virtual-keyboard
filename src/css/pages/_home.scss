@@ -13,7 +13,7 @@ body {
 
 img {
     position: absolute;
-    @include left-top(0);
+    @include left-top(0px, $gap-half);
     @include size(121px, 45px);
 }
 
@@ -29,6 +29,11 @@ textarea {
     border-radius: 10px;
     border-style: none;
     padding: $gap;
+
+    resize: none;
+    &:focus {
+        outline: none; 
+    }
 }
 
 .keyboard_wrapper {
