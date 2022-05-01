@@ -3,36 +3,26 @@
 // -----------------------------------------------------------------------------
 export default class Key {
   constructor(arr, row, number) {
-    this.type = arr[0];
     this.row = row;
     this.number = number;
 
-    if (this.type === 'ctrl') {
-      this.id = arr[1];
+    this.type = arr.type;
+    this.id = arr.id;
+    this.size = arr.size;
 
-      this.label = [arr[2], arr[2], arr[2], arr[2]];
-      if (this.id === 'Lang') this.label = [arr[2], arr[2], 'RU', 'RU'];
+    let label = arr.label;
 
-      this.size = arr[3];
-    } else if (this.type === 'space') {
-      this.id = arr[1];
-
-      this.label = [arr[2], arr[2], arr[2], arr[2]];
-
-      this.size = arr[3];
-    } else if (this.type === 'arrow') {
-      this.id = arr[1];
-
-      this.label = [arr[2], arr[2], arr[2], arr[2]];
-
-      this.size = arr[3];
+    if (Array.isArray(label)) {
+      this.enLower = label[0];
+      this.enUpper = label[1];
+      this.ruLower = label[2];
+      this.ruUpper = label[3];
     } else {
-      this.type = 'abc';
-      this.id = 'abc' + arr[1].charCodeAt(0);
-
-      this.label = [arr[0], arr[1], arr[2], arr[3]];
-
-      this.size = 'mini';
+      label = '' + label;
+      this.enLower = label;
+      this.enUpper = label;
+      this.ruLower = label;
+      this.ruUpper = label;
     }
   }
   createKeyToDOM() {
@@ -51,26 +41,26 @@ export default class Key {
     key.classList.add('key_' + this.type);
 
     let span = document.createElement('span');
-    span.classList.add('engLower');
-    span.textContent = this.label[0];
+    span.classList.add('enLower');
+    span.textContent = this.enLower;
     key.append(span);
 
     span = document.createElement('span');
-    span.classList.add('engUpper');
+    span.classList.add('enUpper');
     span.classList.add('-hidden');
-    span.textContent = this.label[1];
+    span.textContent = this.enUpper;
     key.append(span);
 
     span = document.createElement('span');
     span.classList.add('ruLower');
     span.classList.add('-hidden');
-    span.textContent = this.label[2];
+    span.textContent = this.ruLower;
     key.append(span);
 
     span = document.createElement('span');
     span.classList.add('ruUpper');
     span.classList.add('-hidden');
-    span.textContent = this.label[3];
+    span.textContent = this.ruUpper;
     key.append(span);
 
     keyWrapper.append(key);

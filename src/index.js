@@ -1,7 +1,9 @@
+// -----------------------------------------------------------------------------
 // classes
 // Class Key - constructor(arr, row, number), createKeyToDOM() import Key from './scripts/KeyClass';
 // Class Keyboard - constructor(data), generateKeysArray(data)
 import Keyboard from './scripts/KeyboardClass';
+// -----------------------------------------------------------------------------
 // global const & data
 // KEYS_DATA - array of abc & key properties
 import KEYS_DATA from './scripts/KeysData';
@@ -9,7 +11,6 @@ import KEYS_DATA from './scripts/KeysData';
 const KEYBOARD = new Keyboard(KEYS_DATA);
 // -----------------------------------------------------------------------------
 // start on load of page
-// -----------------------------------------------------------------------------
 window.onload = function () {
   //console.log('go!');
 
@@ -19,12 +20,11 @@ window.onload = function () {
   // add keys in keyboard
   addKeysToDOM(KEYBOARD.keysArray, keyboardWrapper);
 
-  // add handler for virtual keyboard (mouse click)
-  //addMouseHandler();
+  // add handler for keyboard (physical)
+  addKeyboardHandler();
 };
 // -----------------------------------------------------------------------------
 // prepare main html & return keyboard
-// -----------------------------------------------------------------------------
 const addMainToDOM = () => {
   const main = document.createElement('main');
   main.classList.add('wrapper');
@@ -52,7 +52,6 @@ const addMainToDOM = () => {
 };
 // -----------------------------------------------------------------------------
 // add keys in keyboard
-// -----------------------------------------------------------------------------
 const addKeysToDOM = (keysArray, keyboardWrapper) => {
   //console.log(keysArray);
 
@@ -65,7 +64,9 @@ const addKeysToDOM = (keysArray, keyboardWrapper) => {
       let newKey = arr[col].createKeyToDOM();
 
       // on mouse click handler
-      newKey.addEventListener('click', onKeyClick);
+      //   newKey.addEventListener('click', onKeyClick);
+      newKey.addEventListener('mousedown', onMouseDown);
+      newKey.addEventListener('mouseup', onMouseUp);
 
       keyboardRow.append(newKey);
     }
@@ -73,4 +74,26 @@ const addKeysToDOM = (keysArray, keyboardWrapper) => {
     keyboardWrapper.append(keyboardRow);
   }
 };
-const onKeyClick = (event) => {};
+// -----------------------------------------------------------------------------
+// add handler for keyboard (physical)
+const addKeyboardHandler = () => {
+  document.addEventListener('keydown', onKeyDown);
+  document.addEventListener('keyup', onKeyUp);
+};
+const onKeyClick = (event) => {
+  console.log(event.currentTarget);
+};
+const onMouseDown = (event) => {
+  console.log(event.currentTarget);
+};
+const onMouseUp = (event) => {
+  console.log(event.currentTarget);
+};
+const onKeyDown = (event) => {
+  console.log(event.key);
+  console.log(event.code);
+};
+const onKeyUp = (event) => {
+  console.log(event.key);
+  console.log(event.code);
+};
