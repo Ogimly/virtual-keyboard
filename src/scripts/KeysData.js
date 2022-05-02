@@ -70,7 +70,7 @@ const KEYS_DATA = [
     {type: 'ctrl',  id: 'ControlLeft',    size: 'mini',   label: 'Ctrl'},
     {type: 'ctrl',  id: 'Lang',           size: 'mini',   label: ['EN', 'EN', 'RU', 'RU']},
     {type: 'ctrl',  id: 'AltLeft',        size: 'mini',   label: 'Alt'},
-    {type: 'space', id: 'Space',          size: 'space',  label: ' '},
+    {type: 'abc',   id: 'Space',          size: 'space',  label: ' '},
     {type: 'ctrl',  id: 'AltRight',       size: 'mini',   label: 'Alt'},
     {type: 'ctrl',  id: 'ControlRight',   size: 'mini',   label: 'Ctrl'},
     {type: 'arrow', id: 'ArrowLeft',      size: 'mini',   label: '←'},

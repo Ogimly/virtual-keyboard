@@ -9,16 +9,18 @@ import Keyboard from './scripts/KeyboardClass';
 import KEYS_DATA from './scripts/KeysData';
 // KEYBOARD - object of class Keyboard - keys array & keyboard properties
 const KEYBOARD = new Keyboard(KEYS_DATA);
+// keyboardWrapper - DOM element for keyboard
+let keyboardWrapper = null;
 // KeyPressed - what key was pressed in keyboard with mouse
 let KeyPressed = null;
 // -----------------------------------------------------------------------------
 // start on load of page
 window.onload = function () {
   // prepare main html & return keyboardWrapper
-  const keyboardWrapper = addMainToDOM();
+  keyboardWrapper = addMainToDOM();
 
   // add keys in keyboardWrapper
-  addKeysToDOM(KEYBOARD.keysArray, keyboardWrapper);
+  KEYBOARD.addKeysToDOM(keyboardWrapper);
 
   // add handler for mouse
   addMouseHandler();
@@ -49,23 +51,6 @@ const addMainToDOM = () => {
   return keyboardWrapper;
 };
 // -----------------------------------------------------------------------------
-// add keys in keyboardWrapper
-const addKeysToDOM = (keysArray, keyboardWrapper) => {
-  for (let row = 0; row < keysArray.length; row++) {
-    let keyboardRow = document.createElement('div');
-    keyboardRow.classList.add('keyboard_row');
-
-    let arr = keysArray[row];
-    for (let col = 0; col < arr.length; col++) {
-      let newKey = arr[col].createKeyToDOM();
-
-      keyboardRow.append(newKey);
-    }
-
-    keyboardWrapper.append(keyboardRow);
-  }
-};
-// -----------------------------------------------------------------------------
 // add handler for mouse
 const addMouseHandler = () => {
   document.addEventListener('mousedown', onMouseDown);
@@ -82,10 +67,7 @@ const addKeyboardHandler = () => {
 const onMouseDown = (event) => {
   const keyDown = event.target.closest('.key_wrapper');
   if (keyDown) {
-    const code = keyDown.getAttribute('data-id');
-    const key = keyDown.getAttribute('data-currentKey');
-
-    onKeyDown(keyDown, key, code);
+    onKeyDown(keyDown);
     KeyPressed = keyDown; //remember this key
   }
 };
@@ -97,49 +79,48 @@ const onMouseUp = (event) => {
     if (keyUp) {
       // if target is key
       const code = keyUp.getAttribute('data-id');
-      const key = keyUp.getAttribute('data-currentKey');
 
       if (code === KeyPressed.getAttribute('data-id')) {
         // if target is key, that was pressed
-        onKeyUp(keyUp, key, code);
-      } else KeyPressed.firstChild.classList.remove('-active'); // up key pressed
+        onKeyUp(keyUp, code);
+      } else KeyPressed.firstChild.classList.remove('-pressed'); // up key pressed
       // up key pressed
-    } else KeyPressed.firstChild.classList.remove('-active');
+    } else KeyPressed.firstChild.classList.remove('-pressed');
 
     KeyPressed = null;
   }
 };
 const onKeyboardDown = (event) => {
   const code = event.code;
-  const key = event.key;
   const keyDown = document.querySelector(`.key_wrapper[data-id='${code}']`);
 
-  if (keyDown) onKeyDown(keyDown, key, code);
+  if (keyDown) onKeyDown(keyDown);
 };
 const onKeyboardUp = (event) => {
   const code = event.code;
-  const key = event.key;
   const keyUp = document.querySelector(`.key_wrapper[data-id='${code}']`);
 
-  if (keyUp) onKeyUp(keyUp, key, code);
+  if (keyUp) onKeyUp(keyUp, code);
 };
 // -----------------------------------------------------------------------------
 // handlers for keyDown & keyUp ( source of event does not matter )
-const onKeyDown = (keyDown, key, code) => {
+const onKeyDown = (keyDown) => {
   if (keyDown) {
-    const type = keyDown.getAttribute('data-type');
     const keyBtn = keyDown.firstChild;
     if (keyBtn) {
-      keyBtn.classList.add('-active');
+      keyBtn.classList.add('-pressed');
     }
   }
 };
-const onKeyUp = (keyUp, key, code) => {
+const onKeyUp = (keyUp, code) => {
   if (keyUp) {
-    const type = keyUp.getAttribute('data-type');
+    KEYBOARD.update(code);
+
     const keyBtn = keyUp.firstChild;
     if (keyBtn) {
-      keyBtn.classList.remove('-active');
+      keyBtn.classList.remove('-pressed');
+      if (code === 'CapsLock' || code === 'ShiftLeft' || code === 'ShiftRight')
+        keyBtn.classList.toggle('-active');
     }
   }
 };
