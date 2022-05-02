@@ -33,7 +33,7 @@ const KEYS_DATA = [
     {type: 'abc',   id: 'KeyP',           size: 'mini',   label: ['p', 'P', 'з', 'З']},
     {type: 'abc',   id: 'BracketLeft',    size: 'mini',   label: ['[', '{', 'х', 'Х']},
     {type: 'abc',   id: 'BracketRight',   size: 'mini',   label: [']', '}', 'ъ', 'Ъ']},
-    {type: 'ctrl',  id: 'NumpadDecimal',  size: 'midi',   label: 'Delete'},
+    {type: 'ctrl',  id: 'Delete',         size: 'midi',   label: 'Delete'},
   ],
   [
     {type: 'ctrl',  id: 'CapsLock',       size: 'large',  label: 'CapsLock'},
