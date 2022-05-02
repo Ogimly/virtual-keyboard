@@ -4,7 +4,7 @@
 // prettier-ignore
 const KEYS_DATA = [
   [
-    {type: 'abc',   id: 'Backquote',      size: 'mini',   label: ['1', '!', '1', '!']},
+    {type: 'abc',   id: 'Backquote',      size: 'mini',   label: ['`', '~', 'ё', 'Ё']},
     {type: 'abc',   id: 'Digit1',         size: 'mini',   label: ['1', '!', '1', '!']},
     {type: 'abc',   id: 'Digit2',         size: 'mini',   label: ['2', '@', '2', '"']},
     {type: 'abc',   id: 'Digit3',         size: 'mini',   label: ['3', '#', '3', '№']},

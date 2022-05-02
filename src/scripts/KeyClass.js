@@ -32,8 +32,11 @@ export default class Key {
     if (this.type === 'ctrl') keyWrapper.classList.add('-' + this.size);
 
     keyWrapper.setAttribute('data-id', this.id);
-    keyWrapper.setAttribute('data-row', this.row);
-    keyWrapper.setAttribute('data-number', this.number);
+    keyWrapper.setAttribute('data-type', this.type);
+    // keyWrapper.setAttribute('data-row', this.row);
+    // keyWrapper.setAttribute('data-number', this.number);
+
+    keyWrapper.setAttribute('data-currentKey', this.enLower);
 
     const key = document.createElement('div');
 

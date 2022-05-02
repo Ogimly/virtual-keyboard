@@ -12,19 +12,17 @@ const KEYBOARD = new Keyboard(KEYS_DATA);
 // -----------------------------------------------------------------------------
 // start on load of page
 window.onload = function () {
-  //console.log('go!');
-
-  // prepare main html & return keyboard
+  // prepare main html & return keyboardWrapper
   const keyboardWrapper = addMainToDOM();
 
-  // add keys in keyboard
+  // add keys in keyboardWrapper & add handlers for mouse
   addKeysToDOM(KEYBOARD.keysArray, keyboardWrapper);
 
   // add handler for keyboard (physical)
   addKeyboardHandler();
 };
 // -----------------------------------------------------------------------------
-// prepare main html & return keyboard
+// prepare main html & return keyboardWrapper
 const addMainToDOM = () => {
   const main = document.createElement('main');
   main.classList.add('wrapper');
@@ -46,7 +44,7 @@ const addMainToDOM = () => {
   return keyboardWrapper;
 };
 // -----------------------------------------------------------------------------
-// add keys in keyboard
+// add keys in keyboardWrapper & add handlers for mouse
 const addKeysToDOM = (keysArray, keyboardWrapper) => {
   for (let row = 0; row < keysArray.length; row++) {
     let keyboardRow = document.createElement('div');
@@ -57,7 +55,6 @@ const addKeysToDOM = (keysArray, keyboardWrapper) => {
       let newKey = arr[col].createKeyToDOM();
 
       // on mouse click handler
-      //   newKey.addEventListener('click', onKeyClick);
       newKey.addEventListener('mousedown', onMouseDown);
       newKey.addEventListener('mouseup', onMouseUp);
 
@@ -70,23 +67,60 @@ const addKeysToDOM = (keysArray, keyboardWrapper) => {
 // -----------------------------------------------------------------------------
 // add handler for keyboard (physical)
 const addKeyboardHandler = () => {
-  document.addEventListener('keydown', onKeyDown);
-  document.addEventListener('keyup', onKeyUp);
+  document.addEventListener('keydown', onKeyboardDown);
+  document.addEventListener('keyup', onKeyboardUp);
 };
-const onKeyClick = (event) => {
-  console.log(event.currentTarget);
-};
+// -----------------------------------------------------------------------------
+// handlers for keyDown & keyUp ( mouse & keyboard )
 const onMouseDown = (event) => {
-  console.log(event.currentTarget);
+  const keyDown = event.currentTarget;
+  const code = keyDown.getAttribute('data-id');
+  const key = keyDown.getAttribute('data-currentKey');
+
+  onKeyDown(keyDown, key, code);
 };
 const onMouseUp = (event) => {
-  console.log(event.currentTarget);
+  const keyUp = event.currentTarget;
+  const code = keyUp.getAttribute('data-id');
+  const key = keyUp.getAttribute('data-currentKey');
+
+  onKeyUp(keyUp, key, code);
 };
-const onKeyDown = (event) => {
-  console.log(event.key);
-  console.log(event.code);
+const onKeyboardDown = (event) => {
+  const code = event.code;
+  const key = event.key;
+  const keyDown = document.querySelector(`.key_wrapper[data-id='${code}']`);
+
+  if (keyDown) onKeyDown(keyDown, key, code);
 };
-const onKeyUp = (event) => {
-  console.log(event.key);
-  console.log(event.code);
+const onKeyboardUp = (event) => {
+  const code = event.code;
+  const key = event.key;
+  const keyUp = document.querySelector(`.key_wrapper[data-id='${code}']`);
+
+  if (keyUp) onKeyUp(keyUp, key, code);
+};
+// -----------------------------------------------------------------------------
+// handlers for keyDown & keyUp ( source of event does not matter )
+const onKeyDown = (keyDown, key, code) => {
+  //   console.log(keyDown);
+  //   console.log('key: ' + key + ' code: ' + code);
+  if (keyDown) {
+    const type = keyDown.getAttribute('data-type');
+    const keyBtn = keyDown.firstChild;
+    if (keyBtn) {
+      keyBtn.classList.add('-active');
+    }
+  }
+};
+const onKeyUp = (keyUp, key, code) => {
+  //   console.log(keyUp);
+  //   console.log('key: ' + key + ' code: ' + code);
+  if (keyUp) {
+    const type = keyUp.getAttribute('data-type');
+    const keyBtn = keyUp.firstChild;
+    if (keyBtn) {
+      keyBtn.classList.remove('-active');
+    }
+  }
 };
