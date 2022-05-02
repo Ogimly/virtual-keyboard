@@ -33,11 +33,6 @@ const addMainToDOM = () => {
   h1.textContent = 'Virtual keyboard';
   main.append(h1);
 
-  const logo = document.createElement('img');
-  logo.src = './rss.svg';
-  logo.alt = 'Logo The Rolling Scopes School';
-  main.append(logo);
-
   const textarea = document.createElement('textarea');
   textarea.rows = 6;
   main.append(textarea);
@@ -53,8 +48,6 @@ const addMainToDOM = () => {
 // -----------------------------------------------------------------------------
 // add keys in keyboard
 const addKeysToDOM = (keysArray, keyboardWrapper) => {
-  //console.log(keysArray);
-
   for (let row = 0; row < keysArray.length; row++) {
     let keyboardRow = document.createElement('div');
     keyboardRow.classList.add('keyboard_row');

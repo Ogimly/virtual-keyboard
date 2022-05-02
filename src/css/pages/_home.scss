@@ -6,15 +6,9 @@ body {
 }
 
 .wrapper {
-    position: relative;
     max-width: $width-content;
     margin: 0 auto;
-}
-
-img {
-    position: absolute;
-    @include left-top(0px, $gap-half);
-    @include size(121px, 45px);
+    padding-top: 5%;
 }
 
 h1 {
@@ -37,9 +31,8 @@ textarea {
 }
 
 .keyboard_wrapper {
-    //border: 3px solid $color-dark-m;
     border-radius: 10px;
-    background-color: $color-dark-m;
+    background-color: $color-dark-s;
     padding: $gap + $gap-half;
     margin-top: $gap;
 
@@ -72,35 +65,34 @@ textarea {
     height: $height-button - $shadow;
     border-radius: 5px;
     padding: $gap-half;
-    margin: 0 $shadow $shadow 0;
-    box-shadow: $shadow $shadow $shadow $color-primary;
+    box-shadow: 0px 0px  $shadow*3 $shadow $color-primary-light;
 
     display: flex;
     justify-content: center;
     align-items: center; 
 
-    @include text-button($color-light-l);
+    @include text-button($color-dark-2xl);
 
     @extend %transition;
 
     &:hover {
-        box-shadow: $shadow $shadow $shadow $color-primary-light;
+        box-shadow: 0px 0px  $shadow*3 $shadow $color-primary-light-3xl;
     }
 
     &_abc {
-        background-color: $color-dark-l;
+        background-color: $color-light-xl;
     }
 
     &_space {
-        background-color: $color-dark-l;
+        background-color: $color-light-xl;
     }
 
     &_arrow {
-        background-color: $color-dark-2xl;
+        background-color: $color-light-s;
     }
 
     &_ctrl {
-        background-color: $color-dark-2xl;
+        background-color: $color-light-s;
         justify-content: flex-start;
     }
 
@@ -109,8 +101,8 @@ textarea {
     }
 }
 .-active {
-    box-shadow: 0px 0px 0px $color-primary-light;
-    margin: $shadow 0 0 $shadow;
+    box-shadow: 0px 0px 0px;
+    margin: $shadow;
 
     color: $color-primary-light;
 }
