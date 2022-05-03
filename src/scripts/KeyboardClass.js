@@ -6,8 +6,13 @@ import Key from './KeyClass';
 export default class Keyboard {
   constructor(data) {
     this.keysArray = Keyboard.generateKeysArray(data);
+
     this.langArray = ['EN', 'RU'];
-    this.lang = 'EN';
+    [this.lang] = this.langArray;
+    // this.lang = this.langArray[0];
+
+    this.getLangFromLocalStorage();
+
     this.capsLockOn = false;
     this.ShiftLeftOn = false;
     this.ShiftRightOn = false;
@@ -83,10 +88,20 @@ export default class Keyboard {
     return res;
   }
 
+  getLangFromLocalStorage() {
+    if (localStorage.getItem('virtual-keyboard.lang')) {
+      this.lang = localStorage.getItem('virtual-keyboard.lang');
+    } else {
+      localStorage.setItem('virtual-keyboard.lang', this.lang);
+    }
+  }
+
   // switch to next language in langArray
   switchLanguage() {
     this.lang =
       this.langArray[(this.langArray.indexOf(this.lang) + 1) % this.langArray.length];
+
+    localStorage.setItem('virtual-keyboard.lang', this.lang);
   }
 
   // switch Caps and Shift
