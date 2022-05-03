@@ -14,21 +14,6 @@ let keyboardWrapper = null;
 // KeyPressed - what key was pressed in keyboard with mouse
 let KeyPressed = null;
 // -----------------------------------------------------------------------------
-// start on load of page
-window.onload = function () {
-  // prepare main html & return keyboardWrapper
-  keyboardWrapper = addMainToDOM();
-
-  // add keys in keyboardWrapper
-  KEYBOARD.addKeysToDOM(keyboardWrapper);
-
-  // add handler for mouse
-  addMouseHandler();
-
-  // add handler for keyboard (physical)
-  addKeyboardHandler();
-};
-// -----------------------------------------------------------------------------
 // prepare main html & return keyboardWrapper
 const addMainToDOM = () => {
   const main = document.createElement('main');
@@ -42,65 +27,13 @@ const addMainToDOM = () => {
   textarea.rows = 6;
   main.append(textarea);
 
-  const keyboardWrapper = document.createElement('div');
-  keyboardWrapper.classList.add('keyboard_wrapper');
-  main.append(keyboardWrapper);
+  const kbWrapper = document.createElement('div');
+  kbWrapper.classList.add('keyboard_wrapper');
+  main.append(kbWrapper);
 
   document.body.append(main);
 
   return keyboardWrapper;
-};
-// -----------------------------------------------------------------------------
-// add handler for mouse
-const addMouseHandler = () => {
-  document.addEventListener('mousedown', onMouseDown);
-  document.addEventListener('mouseup', onMouseUp);
-};
-// -----------------------------------------------------------------------------
-// add handler for keyboard (physical)
-const addKeyboardHandler = () => {
-  document.addEventListener('keydown', onKeyboardDown);
-  document.addEventListener('keyup', onKeyboardUp);
-};
-// -----------------------------------------------------------------------------
-// handlers for keyDown & keyUp ( mouse & keyboard )
-const onMouseDown = (event) => {
-  const keyDown = event.target.closest('.key_wrapper');
-  if (keyDown) {
-    onKeyDown(keyDown);
-    KeyPressed = keyDown; //remember this key
-  }
-};
-const onMouseUp = (event) => {
-  if (KeyPressed) {
-    // if key was pressed
-    const keyUp = event.target.closest('.key_wrapper');
-
-    if (keyUp) {
-      // if target is key
-      const code = keyUp.getAttribute('data-id');
-
-      if (code === KeyPressed.getAttribute('data-id')) {
-        // if target is key, that was pressed
-        onKeyUp(keyUp, code);
-      } else KeyPressed.firstChild.classList.remove('-pressed'); // up key pressed
-      // up key pressed
-    } else KeyPressed.firstChild.classList.remove('-pressed');
-
-    KeyPressed = null;
-  }
-};
-const onKeyboardDown = (event) => {
-  const code = event.code;
-  const keyDown = document.querySelector(`.key_wrapper[data-id='${code}']`);
-
-  if (keyDown) onKeyDown(keyDown);
-};
-const onKeyboardUp = (event) => {
-  const code = event.code;
-  const keyUp = document.querySelector(`.key_wrapper[data-id='${code}']`);
-
-  if (keyUp) onKeyUp(keyUp, code);
 };
 // -----------------------------------------------------------------------------
 // handlers for keyDown & keyUp ( source of event does not matter )
@@ -123,4 +56,72 @@ const onKeyUp = (keyUp, code) => {
         keyBtn.classList.toggle('-active');
     }
   }
+};
+// -----------------------------------------------------------------------------
+// handlers for keyDown & keyUp ( mouse & keyboard )
+const onMouseDown = (event) => {
+  const keyDown = event.target.closest('.key_wrapper');
+  if (keyDown) {
+    onKeyDown(keyDown);
+    KeyPressed = keyDown; // remember this key
+  }
+};
+const onMouseUp = (event) => {
+  if (KeyPressed) {
+    // if key was pressed
+    const keyUp = event.target.closest('.key_wrapper');
+
+    if (keyUp) {
+      // if target is key
+      const code = keyUp.getAttribute('data-id');
+
+      if (code === KeyPressed.getAttribute('data-id')) {
+        // if target is key, that was pressed
+        onKeyUp(keyUp, code);
+      } else KeyPressed.firstChild.classList.remove('-pressed'); // up key pressed
+      // up key pressed
+    } else KeyPressed.firstChild.classList.remove('-pressed');
+
+    KeyPressed = null;
+  }
+};
+const onKeyboardDown = (event) => {
+  const { code } = event;
+  const keyDown = document.querySelector(`.key_wrapper[data-id='${code}']`);
+
+  if (keyDown) onKeyDown(keyDown);
+};
+const onKeyboardUp = (event) => {
+  const { code } = event;
+  const keyUp = document.querySelector(`.key_wrapper[data-id='${code}']`);
+
+  if (keyUp) onKeyUp(keyUp, code);
+};
+// -----------------------------------------------------------------------------
+// add handler for mouse
+const addMouseHandler = () => {
+  document.addEventListener('mousedown', onMouseDown);
+  document.addEventListener('mouseup', onMouseUp);
+};
+// -----------------------------------------------------------------------------
+// add handler for keyboard (physical)
+const addKeyboardHandler = () => {
+  document.addEventListener('keydown', onKeyboardDown);
+  document.addEventListener('keyup', onKeyboardUp);
+};
+// -----------------------------------------------------------------------------
+// start on load of page
+// -----------------------------------------------------------------------------
+window.onload = () => {
+  // prepare main html & return keyboardWrapper
+  keyboardWrapper = addMainToDOM();
+
+  // add keys in keyboardWrapper
+  KEYBOARD.addKeysToDOM(keyboardWrapper);
+
+  // add handler for mouse
+  addMouseHandler();
+
+  // add handler for keyboard (physical)
+  addKeyboardHandler();
 };

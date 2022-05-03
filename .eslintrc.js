@@ -6,8 +6,6 @@ module.exports = {
 
   extends: ['airbnb-base', 'eslint:recommended', 'prettier'],
 
-  parser: ['babel-eslint'],
-
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',

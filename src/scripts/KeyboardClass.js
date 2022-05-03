@@ -12,15 +12,16 @@ export default class Keyboard {
     this.ShiftLeftOn = false;
     this.ShiftRightOn = false;
   }
+
   // array of Key class object from data
-  generateKeysArray(data) {
-    let resArray = [];
+  static generateKeysArray(data) {
+    const resArray = [];
 
-    for (let row = 0; row < data.length; row++) {
+    for (let row = 0; row < data.length; row += 1) {
       const arr = data[row];
-      let newArr = [];
+      const newArr = [];
 
-      for (let col = 0; col < arr.length; col++) {
+      for (let col = 0; col < arr.length; col += 1) {
         newArr.push(new Key(arr[col], row, col));
       }
 
@@ -28,15 +29,16 @@ export default class Keyboard {
     }
     return resArray;
   }
+
   // add keys to DOM - in keyboardWrapper
   addKeysToDOM(keyboardWrapper) {
-    for (let row = 0; row < this.keysArray.length; row++) {
-      let keyboardRow = document.createElement('div');
+    for (let row = 0; row < this.keysArray.length; row += 1) {
+      const keyboardRow = document.createElement('div');
       keyboardRow.classList.add('keyboard_row');
 
-      let arr = this.keysArray[row];
-      for (let col = 0; col < arr.length; col++) {
-        let newKey = arr[col].createKeyToDOM(this.lang, this.caseStatus());
+      const arr = this.keysArray[row];
+      for (let col = 0; col < arr.length; col += 1) {
+        const newKey = arr[col].createKeyToDOM(this.lang, this.caseStatus());
 
         keyboardRow.append(newKey);
       }
@@ -44,31 +46,34 @@ export default class Keyboard {
       keyboardWrapper.append(keyboardRow);
     }
   }
+
   // update text on keys in DOM
   updateKeysInDOM() {
     let keyDOM = null;
-    for (let row = 0; row < this.keysArray.length; row++) {
+    for (let row = 0; row < this.keysArray.length; row += 1) {
       const arr = this.keysArray[row];
 
-      for (let col = 0; col < arr.length; col++) {
+      for (let col = 0; col < arr.length; col += 1) {
         keyDOM = arr[col].keyDOM;
         keyDOM.firstChild.textContent = arr[col][this.lang][this.caseStatus()];
       }
     }
   }
+
   // return low or up case depend of capsLockOn & shiftOn
   caseStatus() {
     if (this.capsLockOn === (this.ShiftLeftOn || this.ShiftRightOn)) return 'low';
-    else return 'up';
+    return 'up';
   }
+
   // find key object in keysArray
   findKeyOnCode(code) {
     let res = null;
 
-    for (let row = 0; row < this.keysArray.length; row++) {
+    for (let row = 0; row < this.keysArray.length; row += 1) {
       const arr = this.keysArray[row];
 
-      for (let col = 0; col < arr.length; col++) {
+      for (let col = 0; col < arr.length; col += 1) {
         if (arr[col].id === code) {
           res = arr[col];
           break;
@@ -77,17 +82,20 @@ export default class Keyboard {
     }
     return res;
   }
+
   // switch to next language in langArray
   switchLanguage() {
     this.lang =
       this.langArray[(this.langArray.indexOf(this.lang) + 1) % this.langArray.length];
   }
+
   // switch Caps and Shift
   switchCase(code) {
     if (code === 'CapsLock') this.capsLockOn = !this.capsLockOn;
     if (code === 'ShiftLeft') this.ShiftLeftOn = !this.ShiftLeftOn;
     if (code === 'ShiftRight') this.ShiftRight = !this.ShiftRight;
   }
+
   // if any abc key was pressed, remove Shift down
   clearShiftDown() {
     this.ShiftLeftOn = false;
@@ -99,10 +107,11 @@ export default class Keyboard {
     shift = this.findKeyOnCode('ShiftRight').keyDOM.firstChild;
     shift.classList.remove('-active');
   }
+
   // update keyboard properties & render
   update(code) {
     if (code) {
-      let keyObject = this.findKeyOnCode(code);
+      const keyObject = this.findKeyOnCode(code);
 
       if (keyObject) {
         if (keyObject.type === 'abc') {
