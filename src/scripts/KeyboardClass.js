@@ -5,7 +5,7 @@ import Key from './KeyClass';
 // -----------------------------------------------------------------------------
 export default class Keyboard {
   constructor(data) {
-    this.keysArray = this.generateKeysArray(data);
+    this.keysArray = Keyboard.generateKeysArray(data);
     this.langArray = ['EN', 'RU'];
     this.lang = 'EN';
     this.capsLockOn = false;

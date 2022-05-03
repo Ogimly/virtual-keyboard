@@ -33,7 +33,7 @@ const addMainToDOM = () => {
 
   document.body.append(main);
 
-  return keyboardWrapper;
+  return kbWrapper;
 };
 // -----------------------------------------------------------------------------
 // handlers for keyDown & keyUp ( source of event does not matter )
