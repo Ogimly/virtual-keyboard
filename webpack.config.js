@@ -3,11 +3,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const devServer = (isDev) =>
-  !isDev
-    ? {}
-    : {
+  isDev
+    ? {
         devServer: {
           static: {
             directory: path.join(__dirname, 'public'),
@@ -18,7 +18,8 @@ const devServer = (isDev) =>
             app: { name: 'chrome', arguments: ['--new-window'] },
           },
         },
-      };
+      }
+    : {};
 
 module.exports = ({ development }) => ({
   mode: development ? 'development' : 'production',
@@ -63,6 +64,8 @@ module.exports = ({ development }) => ({
   },
 
   plugins: [
+    new ESLintPlugin({ extensions: ['ts', 'js'] }),
+
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
@@ -86,9 +89,4 @@ module.exports = ({ development }) => ({
   ],
 
   ...devServer(development),
-  // devServer: {
-  //   static: './dist',
-  //   port: 3002,
-  //   open: true,
-  // },
 });
