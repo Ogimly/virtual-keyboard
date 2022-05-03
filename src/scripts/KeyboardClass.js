@@ -9,7 +9,6 @@ export default class Keyboard {
 
     this.langArray = ['EN', 'RU'];
     [this.lang] = this.langArray;
-    // this.lang = this.langArray[0];
 
     this.getLangFromLocalStorage();
 
@@ -88,6 +87,7 @@ export default class Keyboard {
     return res;
   }
 
+  // get lang property from localStorage (set if it not defend)
   getLangFromLocalStorage() {
     if (localStorage.getItem('virtual-keyboard.lang')) {
       this.lang = localStorage.getItem('virtual-keyboard.lang');
@@ -96,7 +96,7 @@ export default class Keyboard {
     }
   }
 
-  // switch to next language in langArray
+  // switch to next language in langArray & save it to localStorage
   switchLanguage() {
     this.lang =
       this.langArray[(this.langArray.indexOf(this.lang) + 1) % this.langArray.length];
@@ -104,17 +104,18 @@ export default class Keyboard {
     localStorage.setItem('virtual-keyboard.lang', this.lang);
   }
 
-  // switch Caps and Shift
-  switchCase(code) {
+  // switch Caps and Shifts
+  switchCase(code, keyObject) {
     if (code === 'CapsLock') this.capsLockOn = !this.capsLockOn;
     if (code === 'ShiftLeft') this.ShiftLeftOn = !this.ShiftLeftOn;
-    if (code === 'ShiftRight') this.ShiftRight = !this.ShiftRight;
+    if (code === 'ShiftRight') this.ShiftRightOn = !this.ShiftRightOn;
+    keyObject.keyDOM.firstChild.classList.toggle('-active');
   }
 
-  // if any abc key was pressed, remove Shift down
+  // if any key was pressed, remove Shift down
   clearShiftDown() {
     this.ShiftLeftOn = false;
-    this.ShiftRight = false;
+    this.ShiftRightOn = false;
 
     let shift = this.findKeyOnCode('ShiftLeft').keyDOM.firstChild;
     shift.classList.remove('-active');
@@ -129,10 +130,11 @@ export default class Keyboard {
       const keyObject = this.findKeyOnCode(code);
 
       if (keyObject) {
+        // case of type & code
         if (keyObject.type === 'abc') {
           // handler todo
 
-          // if any abc key was pressed, remove Shift down
+          // if any key was pressed, remove Shift down
           if (this.ShiftLeftOn || this.ShiftRightOn) {
             this.clearShiftDown();
             this.updateKeysInDOM();
@@ -145,7 +147,7 @@ export default class Keyboard {
         }
         // switch Caps or Shift
         else if (code === 'CapsLock' || code === 'ShiftLeft' || code === 'ShiftRight') {
-          this.switchCase(code);
+          this.switchCase(code, keyObject);
           this.updateKeysInDOM();
         }
       }

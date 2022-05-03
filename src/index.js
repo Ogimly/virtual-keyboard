@@ -11,10 +11,12 @@ import KEYS_DATA from './scripts/KeysData';
 const KEYBOARD = new Keyboard(KEYS_DATA);
 // keyboardWrapper - DOM element for keyboard
 let keyboardWrapper = null;
+// inputText - DOM element for textarea
+let inputText = null;
 // KeyPressed - what key was pressed in keyboard with mouse
 let KeyPressed = null;
 // -----------------------------------------------------------------------------
-// prepare main html & return keyboardWrapper
+// prepare main html
 const addMainToDOM = () => {
   const main = document.createElement('main');
   main.classList.add('wrapper');
@@ -23,17 +25,15 @@ const addMainToDOM = () => {
   h1.textContent = 'Virtual keyboard (Windows)';
   main.append(h1);
 
-  const textarea = document.createElement('textarea');
-  textarea.rows = 6;
-  main.append(textarea);
+  inputText = document.createElement('textarea');
+  inputText.rows = 6;
+  main.append(inputText);
 
-  const kbWrapper = document.createElement('div');
-  kbWrapper.classList.add('keyboard_wrapper');
-  main.append(kbWrapper);
+  keyboardWrapper = document.createElement('div');
+  keyboardWrapper.classList.add('keyboard_wrapper');
+  main.append(keyboardWrapper);
 
   document.body.append(main);
-
-  return kbWrapper;
 };
 // -----------------------------------------------------------------------------
 // handlers for keyDown & keyUp ( source of event does not matter )
@@ -47,13 +47,27 @@ const onKeyDown = (keyDown) => {
 };
 const onKeyUp = (keyUp, code) => {
   if (keyUp) {
+    // input handler
+    inputText.focus();
+
+    let text = '';
+
+    const keyObject = KEYBOARD.findKeyOnCode(code);
+    if (keyObject.type === 'abc') {
+      text = keyObject.keyDOM.firstChild.textContent;
+
+      const textBeforeCursor = inputText.value.substring(0, inputText.selectionStart);
+      const textAfterCursor = inputText.value.substring(inputText.selectionEnd);
+
+      inputText.value = textBeforeCursor + text + textAfterCursor;
+    }
+
+    // keyboard update property & render in DOM
     KEYBOARD.update(code);
 
     const keyBtn = keyUp.firstChild;
     if (keyBtn) {
       keyBtn.classList.remove('-pressed');
-      if (code === 'CapsLock' || code === 'ShiftLeft' || code === 'ShiftRight')
-        keyBtn.classList.toggle('-active');
     }
   }
 };
@@ -62,6 +76,7 @@ const onKeyUp = (keyUp, code) => {
 const onMouseDown = (event) => {
   const keyDown = event.target.closest('.key_wrapper');
   if (keyDown) {
+    event.preventDefault();
     onKeyDown(keyDown);
     KeyPressed = keyDown; // remember this key
   }
@@ -77,7 +92,8 @@ const onMouseUp = (event) => {
 
       if (code === KeyPressed.getAttribute('data-id')) {
         // if target is key, that was pressed
-        onKeyUp(keyUp, code);
+        event.preventDefault();
+        onKeyUp(keyUp, code, event);
       } else KeyPressed.firstChild.classList.remove('-pressed'); // up key pressed
       // up key pressed
     } else KeyPressed.firstChild.classList.remove('-pressed');
@@ -89,13 +105,15 @@ const onKeyboardDown = (event) => {
   const { code } = event;
   const keyDown = document.querySelector(`.key_wrapper[data-id='${code}']`);
 
+  event.preventDefault();
   if (keyDown) onKeyDown(keyDown);
 };
 const onKeyboardUp = (event) => {
   const { code } = event;
   const keyUp = document.querySelector(`.key_wrapper[data-id='${code}']`);
 
-  if (keyUp) onKeyUp(keyUp, code);
+  event.preventDefault();
+  if (keyUp) onKeyUp(keyUp, code, event);
 };
 // -----------------------------------------------------------------------------
 // add handler for mouse
@@ -113,8 +131,8 @@ const addKeyboardHandler = () => {
 // start on load of page
 // -----------------------------------------------------------------------------
 window.onload = () => {
-  // prepare main html & return keyboardWrapper
-  keyboardWrapper = addMainToDOM();
+  // prepare main html
+  addMainToDOM();
 
   // add keys in keyboardWrapper
   KEYBOARD.addKeysToDOM(keyboardWrapper);
