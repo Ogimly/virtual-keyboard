@@ -138,34 +138,4 @@ export default class Keyboard {
     shift = this.findKeyOnCode('ShiftRight').keyDOM.firstChild;
     shift.classList.remove('-active');
   }
-
-  // update keyboard properties & render
-  update(code) {
-    if (code) {
-      const keyObject = this.findKeyOnCode(code);
-
-      if (keyObject) {
-        // case of type & code
-        if (keyObject.type === 'abc') {
-          // handler todo
-
-          // if any key was pressed, remove Shift down
-          if (this.ShiftLeftOn || this.ShiftRightOn) {
-            this.clearShiftDown();
-            this.updateKeysInDOM();
-          }
-        }
-        // switch to next language in langArray
-        else if (code === 'Lang') {
-          this.switchLanguage();
-          this.updateKeysInDOM();
-        }
-        // switch Caps or Shift
-        else if (code === 'CapsLock' || code === 'ShiftLeft' || code === 'ShiftRight') {
-          this.switchCase(code, keyObject);
-          this.updateKeysInDOM();
-        }
-      }
-    }
-  }
 }

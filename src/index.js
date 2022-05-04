@@ -52,6 +52,12 @@ const keyPressHandler = (code) => {
 
     if (keyObject.type === 'abc') {
       text = keyObject.keyDOM.firstChild.textContent;
+
+      // if any key was pressed, remove Shift down
+      if (KEYBOARD.ShiftLeftOn || KEYBOARD.ShiftRightOn) {
+        KEYBOARD.clearShiftDown();
+        KEYBOARD.updateKeysInDOM();
+      }
     } else if (code === 'Enter') {
       text = '\n';
     } else if (code === 'Tab') {
@@ -68,6 +74,14 @@ const keyPressHandler = (code) => {
       text = '↑';
     } else if (code === 'ArrowDown') {
       text = '↓';
+    } else if (code === 'Lang') {
+      // switch to next language in langArray
+      KEYBOARD.switchLanguage();
+      KEYBOARD.updateKeysInDOM();
+    } else if (code === 'CapsLock' || code === 'ShiftLeft' || code === 'ShiftRight') {
+      // switch Caps or Shift
+      KEYBOARD.switchCase(code, keyObject);
+      KEYBOARD.updateKeysInDOM();
     }
 
     if (text) {
@@ -123,9 +137,6 @@ const keyPressHandler = (code) => {
       inputText.selectionStart = cursorStart;
       inputText.selectionEnd = cursorEnd;
     }
-
-    // keyboard update property & render in DOM
-    KEYBOARD.update(code);
   }
 };
 // -----------------------------------------------------------------------------
@@ -188,8 +199,16 @@ const onKeyboardDown = (event) => {
 
   event.preventDefault();
 
-  // main handler
-  keyPressHandler(code);
+  // sticky key protection)
+  if (
+    !(
+      (code === 'ShiftLeft' || code === 'ShiftRight') &&
+      (KEYBOARD.ShiftLeftOn || KEYBOARD.ShiftRightOn)
+    )
+  ) {
+    // main handler
+    keyPressHandler(code);
+  }
 
   if (keyDown) addPressed(keyDown);
 };
@@ -198,6 +217,12 @@ const onKeyboardUp = (event) => {
   const keyUp = document.querySelector(`.key_wrapper[data-id='${code}']`);
 
   if (keyUp) removePressed(keyUp);
+
+  // need to remove press shifts
+  if (code === 'ShiftLeft' || code === 'ShiftRight') {
+    KEYBOARD.clearShiftDown();
+    KEYBOARD.updateKeysInDOM();
+  }
 };
 // -----------------------------------------------------------------------------
 // add handler for mouse
