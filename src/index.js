@@ -44,6 +44,11 @@ const keyPressHandler = (code) => {
 
   const keyObject = KEYBOARD.findKeyOnCode(code);
 
+  let cursorStart = inputText.selectionStart;
+  let cursorEnd = inputText.selectionEnd;
+  const textBeforeCursor = inputText.value.substring(0, cursorStart);
+  const textAfterCursor = inputText.value.substring(cursorEnd);
+
   if (keyObject.type === 'abc') {
     text = keyObject.keyDOM.firstChild.textContent;
   } else if (code === 'Enter') {
@@ -57,16 +62,34 @@ const keyPressHandler = (code) => {
   }
 
   if (text) {
-    const textBeforeCursor = inputText.value.substring(0, inputText.selectionStart);
-    const textAfterCursor = inputText.value.substring(inputText.selectionEnd);
-
     if (text === '\b') {
-      inputText.value = textBeforeCursor.slice(0, -1) + textAfterCursor;
+      // Backspace
+      if (cursorStart === cursorEnd) {
+        // no selection
+        inputText.value = textBeforeCursor.slice(0, -1) + textAfterCursor;
+        cursorStart = cursorStart === 0 ? 0 : cursorStart - 1;
+        cursorEnd = cursorStart;
+      } else {
+        inputText.value = textBeforeCursor + textAfterCursor;
+        cursorEnd = cursorStart;
+      }
     } else if (text === 'del') {
-      inputText.value = textBeforeCursor + textAfterCursor.slice(1);
+      // Delete
+      if (cursorStart === cursorEnd) {
+        // no selection
+        inputText.value = textBeforeCursor + textAfterCursor.slice(1);
+      } else {
+        inputText.value = textBeforeCursor + textAfterCursor;
+        cursorEnd = cursorStart;
+      }
     } else {
       inputText.value = textBeforeCursor + text + textAfterCursor;
+      cursorStart = inputText.value.length;
+      cursorEnd = cursorStart;
     }
+
+    inputText.selectionStart = cursorStart;
+    inputText.selectionEnd = cursorEnd;
   }
 
   // keyboard update property & render in DOM
