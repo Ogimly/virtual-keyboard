@@ -36,8 +36,45 @@ const addMainToDOM = () => {
   document.body.append(main);
 };
 // -----------------------------------------------------------------------------
-// handlers for keyDown & keyUp ( source of event does not matter )
-const onKeyDown = (keyDown) => {
+// handler for key press (main handler)
+const keyPressHandler = (code) => {
+  inputText.focus();
+
+  let text = '';
+
+  const keyObject = KEYBOARD.findKeyOnCode(code);
+
+  if (keyObject.type === 'abc') {
+    text = keyObject.keyDOM.firstChild.textContent;
+  } else if (code === 'Enter') {
+    text = '\n';
+  } else if (code === 'Tab') {
+    text = '\t';
+  } else if (code === 'Backspace') {
+    text = '\b';
+  } else if (code === 'Delete') {
+    text = 'del';
+  }
+
+  if (text) {
+    const textBeforeCursor = inputText.value.substring(0, inputText.selectionStart);
+    const textAfterCursor = inputText.value.substring(inputText.selectionEnd);
+
+    if (text === '\b') {
+      inputText.value = textBeforeCursor.slice(0, -1) + textAfterCursor;
+    } else if (text === 'del') {
+      inputText.value = textBeforeCursor + textAfterCursor.slice(1);
+    } else {
+      inputText.value = textBeforeCursor + text + textAfterCursor;
+    }
+  }
+
+  // keyboard update property & render in DOM
+  KEYBOARD.update(code);
+};
+// -----------------------------------------------------------------------------
+// add or remove class -pressed
+const addPressed = (keyDown) => {
   if (keyDown) {
     const keyBtn = keyDown.firstChild;
     if (keyBtn) {
@@ -45,26 +82,8 @@ const onKeyDown = (keyDown) => {
     }
   }
 };
-const onKeyUp = (keyUp, code) => {
+const removePressed = (keyUp) => {
   if (keyUp) {
-    // input handler
-    inputText.focus();
-
-    let text = '';
-
-    const keyObject = KEYBOARD.findKeyOnCode(code);
-    if (keyObject.type === 'abc') {
-      text = keyObject.keyDOM.firstChild.textContent;
-
-      const textBeforeCursor = inputText.value.substring(0, inputText.selectionStart);
-      const textAfterCursor = inputText.value.substring(inputText.selectionEnd);
-
-      inputText.value = textBeforeCursor + text + textAfterCursor;
-    }
-
-    // keyboard update property & render in DOM
-    KEYBOARD.update(code);
-
     const keyBtn = keyUp.firstChild;
     if (keyBtn) {
       keyBtn.classList.remove('-pressed');
@@ -76,9 +95,11 @@ const onKeyUp = (keyUp, code) => {
 const onMouseDown = (event) => {
   const keyDown = event.target.closest('.key_wrapper');
   if (keyDown) {
-    event.preventDefault();
-    onKeyDown(keyDown);
-    KeyPressed = keyDown; // remember this key
+    // const code = keyDown.getAttribute('data-id');
+    addPressed(keyDown);
+
+    // remember this key
+    KeyPressed = keyDown;
   }
 };
 const onMouseUp = (event) => {
@@ -93,10 +114,14 @@ const onMouseUp = (event) => {
       if (code === KeyPressed.getAttribute('data-id')) {
         // if target is key, that was pressed
         event.preventDefault();
-        onKeyUp(keyUp, code, event);
-      } else KeyPressed.firstChild.classList.remove('-pressed'); // up key pressed
+
+        // main handler
+        keyPressHandler(code);
+
+        removePressed(keyUp);
+      } else removePressed(KeyPressed); // KeyPressed.firstChild.classList.remove('-pressed'); // up key pressed
       // up key pressed
-    } else KeyPressed.firstChild.classList.remove('-pressed');
+    } else removePressed(KeyPressed); // KeyPressed.firstChild.classList.remove('-pressed');
 
     KeyPressed = null;
   }
@@ -106,14 +131,17 @@ const onKeyboardDown = (event) => {
   const keyDown = document.querySelector(`.key_wrapper[data-id='${code}']`);
 
   event.preventDefault();
-  if (keyDown) onKeyDown(keyDown);
+
+  // main handler
+  keyPressHandler(code);
+
+  if (keyDown) addPressed(keyDown);
 };
 const onKeyboardUp = (event) => {
   const { code } = event;
   const keyUp = document.querySelector(`.key_wrapper[data-id='${code}']`);
 
-  event.preventDefault();
-  if (keyUp) onKeyUp(keyUp, code, event);
+  if (keyUp) removePressed(keyUp);
 };
 // -----------------------------------------------------------------------------
 // add handler for mouse
