@@ -1,7 +1,7 @@
 // -----------------------------------------------------------------------------
 // classes
 // Class Key - constructor(arr, row, number), createKeyToDOM() import Key from './scripts/KeyClass';
-// Class Keyboard - constructor(data), generateKeysArray(data)
+// Class Keyboard - constructor(data), generateKeysArray(data), ...
 import Keyboard from './scripts/KeyboardClass';
 // -----------------------------------------------------------------------------
 // global const & data
@@ -44,56 +44,89 @@ const keyPressHandler = (code) => {
 
   const keyObject = KEYBOARD.findKeyOnCode(code);
 
-  let cursorStart = inputText.selectionStart;
-  let cursorEnd = inputText.selectionEnd;
-  const textBeforeCursor = inputText.value.substring(0, cursorStart);
-  const textAfterCursor = inputText.value.substring(cursorEnd);
+  if (keyObject) {
+    let cursorStart = inputText.selectionStart;
+    let cursorEnd = inputText.selectionEnd;
+    const textBeforeCursor = inputText.value.substring(0, cursorStart);
+    const textAfterCursor = inputText.value.substring(cursorEnd);
 
-  if (keyObject.type === 'abc') {
-    text = keyObject.keyDOM.firstChild.textContent;
-  } else if (code === 'Enter') {
-    text = '\n';
-  } else if (code === 'Tab') {
-    text = '\t';
-  } else if (code === 'Backspace') {
-    text = '\b';
-  } else if (code === 'Delete') {
-    text = 'del';
-  }
-
-  if (text) {
-    if (text === '\b') {
-      // Backspace
-      if (cursorStart === cursorEnd) {
-        // no selection
-        inputText.value = textBeforeCursor.slice(0, -1) + textAfterCursor;
-        cursorStart = cursorStart === 0 ? 0 : cursorStart - 1;
-        cursorEnd = cursorStart;
-      } else {
-        inputText.value = textBeforeCursor + textAfterCursor;
-        cursorEnd = cursorStart;
-      }
-    } else if (text === 'del') {
-      // Delete
-      if (cursorStart === cursorEnd) {
-        // no selection
-        inputText.value = textBeforeCursor + textAfterCursor.slice(1);
-      } else {
-        inputText.value = textBeforeCursor + textAfterCursor;
-        cursorEnd = cursorStart;
-      }
-    } else {
-      inputText.value = textBeforeCursor + text + textAfterCursor;
-      cursorStart = inputText.value.length;
-      cursorEnd = cursorStart;
+    if (keyObject.type === 'abc') {
+      text = keyObject.keyDOM.firstChild.textContent;
+    } else if (code === 'Enter') {
+      text = '\n';
+    } else if (code === 'Tab') {
+      text = '\t';
+    } else if (code === 'Backspace') {
+      text = 'Backspace';
+    } else if (code === 'Delete') {
+      text = 'Delete';
+    } else if (code === 'ArrowLeft') {
+      text = '←';
+    } else if (code === 'ArrowRight') {
+      text = '→';
+    } else if (code === 'ArrowUp') {
+      text = '↑';
+    } else if (code === 'ArrowDown') {
+      text = '↓';
     }
 
-    inputText.selectionStart = cursorStart;
-    inputText.selectionEnd = cursorEnd;
-  }
+    if (text) {
+      // Backspace
+      if (text === 'Backspace') {
+        if (cursorStart === cursorEnd) {
+          // no selection
+          inputText.value = textBeforeCursor.slice(0, -1) + textAfterCursor;
+          cursorStart = cursorStart === 0 ? 0 : cursorStart - 1;
+          cursorEnd = cursorStart;
+        } else {
+          inputText.value = textBeforeCursor + textAfterCursor;
+          cursorEnd = cursorStart;
+        }
+      }
+      // Delete
+      else if (text === 'Delete') {
+        if (cursorStart === cursorEnd) {
+          // no selection
+          inputText.value = textBeforeCursor + textAfterCursor.slice(1);
+        } else {
+          inputText.value = textBeforeCursor + textAfterCursor;
+          cursorEnd = cursorStart;
+        }
+      }
+      // ArrowLeft
+      else if (text === '←') {
+        cursorStart =
+          cursorStart === 0
+            ? 0 // start of line
+            : cursorStart - 1;
+        cursorEnd = cursorStart;
+      }
+      // ArrowRight
+      else if (text === '→') {
+        cursorStart =
+          cursorStart === inputText.value.length - 1
+            ? inputText.value.length // end of line
+            : cursorStart + 1;
+        cursorEnd = cursorStart;
+      }
+      // ArrowUp, ArrowDown - TODO || !TODO
+      // abc & other
+      else {
+        inputText.value = textBeforeCursor + text + textAfterCursor;
+        cursorStart =
+          cursorStart === inputText.value.length - 1
+            ? inputText.value.length // end of line
+            : cursorStart + 1;
+        cursorEnd = cursorStart;
+      }
 
-  // keyboard update property & render in DOM
-  KEYBOARD.update(code);
+      inputText.selectionStart = cursorStart;
+      inputText.selectionEnd = cursorEnd;
+    }
+
+    // keyboard update property & render in DOM
+    KEYBOARD.update(code);
+  }
 };
 // -----------------------------------------------------------------------------
 // add or remove class -pressed

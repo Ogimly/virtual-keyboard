@@ -1,7 +1,7 @@
 // Class Key - constructor(arr, row, number), createKeyToDOM(language, caseChar)
 import Key from './KeyClass';
 // -----------------------------------------------------------------------------
-// Class Keyboard - constructor(data), generateKeysArray(data), update(type, key, code)
+// Class Keyboard - constructor(data), generateKeysArray(data), ...
 // -----------------------------------------------------------------------------
 export default class Keyboard {
   constructor(data) {
@@ -42,7 +42,7 @@ export default class Keyboard {
 
       const arr = this.keysArray[row];
       for (let col = 0; col < arr.length; col += 1) {
-        const newKey = arr[col].createKeyToDOM(this.lang, this.caseStatus());
+        const newKey = arr[col].createKeyToDOM(this.lang, this.caseStatus(row));
 
         keyboardRow.append(newKey);
       }
@@ -59,15 +59,30 @@ export default class Keyboard {
 
       for (let col = 0; col < arr.length; col += 1) {
         keyDOM = arr[col].keyDOM;
-        keyDOM.firstChild.textContent = arr[col][this.lang][this.caseStatus()];
+        keyDOM.firstChild.textContent = arr[col][this.lang][this.caseStatus(row)];
       }
     }
   }
 
   // return low or up case depend of capsLockOn & shiftOn
-  caseStatus() {
-    if (this.capsLockOn === (this.ShiftLeftOn || this.ShiftRightOn)) return 'low';
-    return 'up';
+  caseStatus(row) {
+    let res = '';
+
+    // for digits caps dont work
+    if (row === 0)
+      if (this.ShiftLeftOn || this.ShiftRightOn) {
+        res = 'up';
+      } else {
+        res = 'low';
+      }
+    // for other rows
+    else if (this.capsLockOn === (this.ShiftLeftOn || this.ShiftRightOn)) {
+      res = 'low';
+    } else {
+      res = 'up';
+    }
+
+    return res;
   }
 
   // find key object in keysArray

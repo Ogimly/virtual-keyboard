@@ -75,7 +75,7 @@ const KEYS_DATA = [
     {type: 'ctrl',  id: 'ControlRight',   size: 'mini',   label: 'Ctrl'},
     {type: 'arrow', id: 'ArrowLeft',      size: 'mini',   label: '←'},
     {type: 'arrow', id: 'ArrowDown',      size: 'mini',   label: '↓'},
-    {type: 'arrow', id: 'ArrowRight',     size: 'mini',   label: '←'},
+    {type: 'arrow', id: 'ArrowRight',     size: 'mini',   label: '→'},
   ],
 ];
 
