@@ -13,8 +13,15 @@ export default class Keyboard {
     this.getLangFromLocalStorage();
 
     this.capsLockOn = false;
+
     this.ShiftLeftOn = false;
     this.ShiftRightOn = false;
+
+    this.ControlLeftOn = false;
+    this.ControlRightOn = false;
+
+    this.AltLeftOn = false;
+    this.AltRightOn = false;
   }
 
   // array of Key class object from data
@@ -26,7 +33,7 @@ export default class Keyboard {
       const newArr = [];
 
       for (let col = 0; col < arr.length; col += 1) {
-        newArr.push(new Key(arr[col], row, col));
+        newArr.push(new Key(arr[col]));
       }
 
       resArray.push(newArr);
@@ -127,15 +134,50 @@ export default class Keyboard {
     keyObject.keyDOM.firstChild.classList.toggle('-active');
   }
 
-  // if any key was pressed, remove Shift down
-  clearShiftDown() {
-    this.ShiftLeftOn = false;
-    this.ShiftRightOn = false;
+  // switch Control
+  switchControl(code, keyObject) {
+    if (code === 'ControlLeft') this.ControlLeftOn = !this.ControlLeftOn;
+    if (code === 'ControlRight') this.ControlRightOn = !this.ControlRightOn;
+    keyObject.keyDOM.firstChild.classList.toggle('-active');
+  }
 
-    let shift = this.findKeyOnCode('ShiftLeft').keyDOM.firstChild;
-    shift.classList.remove('-active');
+  // switch Alt
+  switchAlt(code, keyObject) {
+    if (code === 'AltLeft') this.AltLeftOn = !this.AltLeftOn;
+    if (code === 'AltRight') this.AltRightOn = !this.AltRightOn;
+    keyObject.keyDOM.firstChild.classList.toggle('-active');
+  }
 
-    shift = this.findKeyOnCode('ShiftRight').keyDOM.firstChild;
-    shift.classList.remove('-active');
+  // if any key was pressed, remove Shift, Control or Alt down
+  clearKeyDown(code) {
+    this[`${code}LeftOn`] = false;
+    this[`${code}RightOn`] = false;
+
+    let key = this.findKeyOnCode(`${code}Left`).keyDOM.firstChild;
+    key.classList.remove('-active');
+
+    key = this.findKeyOnCode(`${code}Right`).keyDOM.firstChild;
+    key.classList.remove('-active');
+  }
+
+  hotKeyPressed(code) {
+    return (
+      (this.ShiftLeftOn && !(code === 'ShiftLef')) ||
+      (this.ShiftRightOn && !(code === 'ShiftRight')) ||
+      (this.ControlLeftOn && !(code === 'ControlLeft')) ||
+      (this.ControlRightOn && !(code === 'ControlRight')) ||
+      (this.AltLeftOn && !(code === 'AltLeft')) ||
+      (this.AltRightOn && !(code === 'AltRight'))
+    );
+  }
+
+  getHotKey(code) {
+    if (this.ShiftLeftOn) return `ShiftLeft + ${code}`;
+    if (this.ShiftRightOn) return `ShiftRight + ${code}`;
+    if (this.ControlLeftOn) return `ControlLef + ${code}`;
+    if (this.ControlRightOn) return `ControlRight + ${code}`;
+    if (this.AltLeftOn) return `AltLeft + ${code}`;
+    if (this.AltRightOn) return `AltRight + ${code}`;
+    return 'none';
   }
 }

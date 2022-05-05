@@ -33,6 +33,10 @@ const addMainToDOM = () => {
   keyboardWrapper.classList.add('keyboard_wrapper');
   main.append(keyboardWrapper);
 
+  const p = document.createElement('p');
+  p.textContent = 'Change language <Shift + Control>';
+  main.append(p);
+
   document.body.append(main);
 };
 // -----------------------------------------------------------------------------
@@ -50,14 +54,40 @@ const keyPressHandler = (code) => {
     const textBeforeCursor = inputText.value.substring(0, cursorStart);
     const textAfterCursor = inputText.value.substring(cursorEnd);
 
-    if (keyObject.type === 'abc') {
-      text = keyObject.keyDOM.firstChild.textContent;
-
-      // if any key was pressed, remove Shift down
-      if (KEYBOARD.ShiftLeftOn || KEYBOARD.ShiftRightOn) {
-        KEYBOARD.clearShiftDown();
+    if (KEYBOARD.hotKeyPressed(code)) {
+      // Hot Key handler
+      if (keyObject.type === 'abc' && (KEYBOARD.ShiftLeftOn || KEYBOARD.ShiftRightOn)) {
+        // upper case
+        text = keyObject.keyDOM.firstChild.textContent;
+      } else if (
+        // switch to next language in langArray
+        ((KEYBOARD.ShiftLeftOn || KEYBOARD.ShiftRightOn) &&
+          (code === 'ControlLeft' || code === 'ControlRight')) ||
+        ((KEYBOARD.ControlLeftOn || KEYBOARD.ControlRightOn) &&
+          (code === 'ShiftLeft' || code === 'ShiftRight'))
+      ) {
+        KEYBOARD.switchLanguage();
         KEYBOARD.updateKeysInDOM();
+      } else {
+        // output hot key
+        text = `<${KEYBOARD.getHotKey(code)}>`;
       }
+    } else if (code === 'Lang') {
+      // switch to next language in langArray
+      KEYBOARD.switchLanguage();
+      KEYBOARD.updateKeysInDOM();
+    } else if (code === 'CapsLock' || code === 'ShiftLeft' || code === 'ShiftRight') {
+      // switch Caps or Shift
+      KEYBOARD.switchCase(code, keyObject);
+      KEYBOARD.updateKeysInDOM();
+    } else if (code === 'ControlLeft' || code === 'ControlRight') {
+      // switch Control
+      KEYBOARD.switchControl(code, keyObject);
+    } else if (code === 'AltLeft' || code === 'AltRight') {
+      // switch Alt
+      KEYBOARD.switchAlt(code, keyObject);
+    } else if (keyObject.type === 'abc') {
+      text = keyObject.keyDOM.firstChild.textContent;
     } else if (code === 'Enter') {
       text = '\n';
     } else if (code === 'Tab') {
@@ -74,14 +104,6 @@ const keyPressHandler = (code) => {
       text = '↑';
     } else if (code === 'ArrowDown') {
       text = '↓';
-    } else if (code === 'Lang') {
-      // switch to next language in langArray
-      KEYBOARD.switchLanguage();
-      KEYBOARD.updateKeysInDOM();
-    } else if (code === 'CapsLock' || code === 'ShiftLeft' || code === 'ShiftRight') {
-      // switch Caps or Shift
-      KEYBOARD.switchCase(code, keyObject);
-      KEYBOARD.updateKeysInDOM();
     }
 
     if (text) {
@@ -107,21 +129,39 @@ const keyPressHandler = (code) => {
           cursorEnd = cursorStart;
         }
       }
-      // ArrowLeft
+      // ArrowLeft & selection
       else if (text === '←') {
         cursorStart =
           cursorStart === 0
             ? 0 // start of line
             : cursorStart - 1;
         cursorEnd = cursorStart;
+      } else if (
+        text === '<ShiftLeft + ArrowLeft>' ||
+        text === '<ShiftRight + ArrowLeft>'
+      ) {
+        cursorStart =
+          cursorStart === 0
+            ? 0 // start of line
+            : cursorStart - 1;
+        inputText.selectionDirection = 'backward';
       }
-      // ArrowRight
+      // ArrowRight & selection
       else if (text === '→') {
         cursorStart =
           cursorStart === inputText.value.length - 1
             ? inputText.value.length // end of line
             : cursorStart + 1;
         cursorEnd = cursorStart;
+      } else if (
+        text === '<ShiftLeft + ArrowRight>' ||
+        text === '<ShiftRight + ArrowRight>'
+      ) {
+        cursorEnd =
+          cursorEnd === inputText.value.length - 1
+            ? inputText.value.length // end of line
+            : cursorEnd + 1;
+        inputText.selectionDirection = 'forward';
       }
       // ArrowUp, ArrowDown - TODO || !TODO
       // abc & other
@@ -130,7 +170,7 @@ const keyPressHandler = (code) => {
         cursorStart =
           cursorStart === inputText.value.length - 1
             ? inputText.value.length // end of line
-            : cursorStart + 1;
+            : cursorStart + text.length;
         cursorEnd = cursorStart;
       }
 
@@ -185,10 +225,31 @@ const onMouseUp = (event) => {
         // main handler
         keyPressHandler(code);
 
+        // if any key was pressed, remove Shift, Control or Alt down
+        if (
+          (KEYBOARD.ShiftLeftOn || KEYBOARD.ShiftRightOn) &&
+          !(code === 'ShiftLeft' || code === 'ShiftRight')
+        ) {
+          KEYBOARD.clearKeyDown('Shift');
+          KEYBOARD.updateKeysInDOM();
+        }
+        if (
+          (KEYBOARD.ControlLeftOn || KEYBOARD.ControlRightOn) &&
+          !(code === 'ControlLeft' || code === 'ControlRight')
+        ) {
+          KEYBOARD.clearKeyDown('Control');
+        }
+        if (
+          (KEYBOARD.AltLeftOn || KEYBOARD.AltRightOn) &&
+          !(code === 'AltLeft' || code === 'AltRight')
+        ) {
+          KEYBOARD.clearKeyDown('Alt');
+        }
+
         removePressed(keyUp);
-      } else removePressed(KeyPressed); // KeyPressed.firstChild.classList.remove('-pressed'); // up key pressed
+      } else removePressed(KeyPressed); // up key pressed
       // up key pressed
-    } else removePressed(KeyPressed); // KeyPressed.firstChild.classList.remove('-pressed');
+    } else removePressed(KeyPressed);
 
     KeyPressed = null;
   }
@@ -220,8 +281,14 @@ const onKeyboardUp = (event) => {
 
   // need to remove press shifts
   if (code === 'ShiftLeft' || code === 'ShiftRight') {
-    KEYBOARD.clearShiftDown();
+    KEYBOARD.clearKeyDown('Shift');
     KEYBOARD.updateKeysInDOM();
+  }
+  if (code === 'ControlLeft' || code === 'ControlRight') {
+    KEYBOARD.clearKeyDown('Control');
+  }
+  if (code === 'AltLeft' || code === 'AltRight') {
+    KEYBOARD.clearKeyDown('Alt');
   }
 };
 // -----------------------------------------------------------------------------
