@@ -126,23 +126,13 @@ export default class Keyboard {
     localStorage.setItem('virtual-keyboard.lang', this.lang);
   }
 
-  // switch Caps and Shifts
-  switchCase(code, keyObject) {
+  // switch Key
+  switchKey(code, keyObject) {
     if (code === 'CapsLock') this.capsLockOn = !this.capsLockOn;
     if (code === 'ShiftLeft') this.ShiftLeftOn = !this.ShiftLeftOn;
     if (code === 'ShiftRight') this.ShiftRightOn = !this.ShiftRightOn;
-    keyObject.keyDOM.firstChild.classList.toggle('-active');
-  }
-
-  // switch Control
-  switchControl(code, keyObject) {
     if (code === 'ControlLeft') this.ControlLeftOn = !this.ControlLeftOn;
     if (code === 'ControlRight') this.ControlRightOn = !this.ControlRightOn;
-    keyObject.keyDOM.firstChild.classList.toggle('-active');
-  }
-
-  // switch Alt
-  switchAlt(code, keyObject) {
     if (code === 'AltLeft') this.AltLeftOn = !this.AltLeftOn;
     if (code === 'AltRight') this.AltRightOn = !this.AltRightOn;
     keyObject.keyDOM.firstChild.classList.toggle('-active');
@@ -162,7 +152,7 @@ export default class Keyboard {
 
   hotKeyPressed(code) {
     return (
-      (this.ShiftLeftOn && !(code === 'ShiftLef')) ||
+      (this.ShiftLeftOn && !(code === 'ShiftLeft')) ||
       (this.ShiftRightOn && !(code === 'ShiftRight')) ||
       (this.ControlLeftOn && !(code === 'ControlLeft')) ||
       (this.ControlRightOn && !(code === 'ControlRight')) ||

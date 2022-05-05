@@ -78,14 +78,14 @@ const keyPressHandler = (code) => {
       KEYBOARD.updateKeysInDOM();
     } else if (code === 'CapsLock' || code === 'ShiftLeft' || code === 'ShiftRight') {
       // switch Caps or Shift
-      KEYBOARD.switchCase(code, keyObject);
+      KEYBOARD.switchKey(code, keyObject);
       KEYBOARD.updateKeysInDOM();
     } else if (code === 'ControlLeft' || code === 'ControlRight') {
       // switch Control
-      KEYBOARD.switchControl(code, keyObject);
+      KEYBOARD.switchKey(code, keyObject);
     } else if (code === 'AltLeft' || code === 'AltRight') {
       // switch Alt
-      KEYBOARD.switchAlt(code, keyObject);
+      KEYBOARD.switchKey(code, keyObject);
     } else if (keyObject.type === 'abc') {
       text = keyObject.keyDOM.firstChild.textContent;
     } else if (code === 'Enter') {
