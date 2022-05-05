@@ -2,10 +2,7 @@
 // Class Key - constructor(arr, row, number), createKeyToDOM(language, caseChar)
 // -----------------------------------------------------------------------------
 export default class Key {
-  constructor(arr, row, number) {
-    this.row = row;
-    this.number = number;
-
+  constructor(arr) {
     this.type = arr.type;
     this.id = arr.id;
     this.size = arr.size;

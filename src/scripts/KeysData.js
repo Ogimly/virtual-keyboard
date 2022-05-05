@@ -17,7 +17,7 @@ const KEYS_DATA = [
     {type: 'abc',   id: 'Digit0',         size: 'mini',   label: ['0', ')', '0', ')']},
     {type: 'abc',   id: 'Minus',          size: 'mini',   label: ['-', '_', '-', '_']},
     {type: 'abc',   id: 'Equal',          size: 'mini',   label: ['=', '+', '=', '+']},
-    {type: 'ctrl',  id: 'Backspace',      size: 'large',  label: 'Backspaсe'},
+    {type: 'ctrl',  id: 'Backspace',      size: 'large',  label: 'Backspace'},
   ],
   [
     {type: 'ctrl',  id: 'Tab',            size: 'midi',   label: 'Tab'},
@@ -75,7 +75,7 @@ const KEYS_DATA = [
     {type: 'ctrl',  id: 'ControlRight',   size: 'mini',   label: 'Ctrl'},
     {type: 'arrow', id: 'ArrowLeft',      size: 'mini',   label: '←'},
     {type: 'arrow', id: 'ArrowDown',      size: 'mini',   label: '↓'},
-    {type: 'arrow', id: 'ArrowRight',     size: 'mini',   label: '←'},
+    {type: 'arrow', id: 'ArrowRight',     size: 'mini',   label: '→'},
   ],
 ];
 

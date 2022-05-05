@@ -1,7 +1,7 @@
 // Class Key - constructor(arr, row, number), createKeyToDOM(language, caseChar)
 import Key from './KeyClass';
 // -----------------------------------------------------------------------------
-// Class Keyboard - constructor(data), generateKeysArray(data), update(type, key, code)
+// Class Keyboard - constructor(data), generateKeysArray(data), ...
 // -----------------------------------------------------------------------------
 export default class Keyboard {
   constructor(data) {
@@ -9,13 +9,19 @@ export default class Keyboard {
 
     this.langArray = ['EN', 'RU'];
     [this.lang] = this.langArray;
-    // this.lang = this.langArray[0];
 
     this.getLangFromLocalStorage();
 
     this.capsLockOn = false;
+
     this.ShiftLeftOn = false;
     this.ShiftRightOn = false;
+
+    this.ControlLeftOn = false;
+    this.ControlRightOn = false;
+
+    this.AltLeftOn = false;
+    this.AltRightOn = false;
   }
 
   // array of Key class object from data
@@ -27,7 +33,7 @@ export default class Keyboard {
       const newArr = [];
 
       for (let col = 0; col < arr.length; col += 1) {
-        newArr.push(new Key(arr[col], row, col));
+        newArr.push(new Key(arr[col]));
       }
 
       resArray.push(newArr);
@@ -43,7 +49,7 @@ export default class Keyboard {
 
       const arr = this.keysArray[row];
       for (let col = 0; col < arr.length; col += 1) {
-        const newKey = arr[col].createKeyToDOM(this.lang, this.caseStatus());
+        const newKey = arr[col].createKeyToDOM(this.lang, this.caseStatus(row));
 
         keyboardRow.append(newKey);
       }
@@ -60,15 +66,30 @@ export default class Keyboard {
 
       for (let col = 0; col < arr.length; col += 1) {
         keyDOM = arr[col].keyDOM;
-        keyDOM.firstChild.textContent = arr[col][this.lang][this.caseStatus()];
+        keyDOM.firstChild.textContent = arr[col][this.lang][this.caseStatus(row)];
       }
     }
   }
 
   // return low or up case depend of capsLockOn & shiftOn
-  caseStatus() {
-    if (this.capsLockOn === (this.ShiftLeftOn || this.ShiftRightOn)) return 'low';
-    return 'up';
+  caseStatus(row) {
+    let res = '';
+
+    // for digits caps dont work
+    if (row === 0)
+      if (this.ShiftLeftOn || this.ShiftRightOn) {
+        res = 'up';
+      } else {
+        res = 'low';
+      }
+    // for other rows
+    else if (this.capsLockOn === (this.ShiftLeftOn || this.ShiftRightOn)) {
+      res = 'low';
+    } else {
+      res = 'up';
+    }
+
+    return res;
   }
 
   // find key object in keysArray
@@ -88,6 +109,7 @@ export default class Keyboard {
     return res;
   }
 
+  // get lang property from localStorage (set if it not defend)
   getLangFromLocalStorage() {
     if (localStorage.getItem('virtual-keyboard.lang')) {
       this.lang = localStorage.getItem('virtual-keyboard.lang');
@@ -96,7 +118,7 @@ export default class Keyboard {
     }
   }
 
-  // switch to next language in langArray
+  // switch to next language in langArray & save it to localStorage
   switchLanguage() {
     this.lang =
       this.langArray[(this.langArray.indexOf(this.lang) + 1) % this.langArray.length];
@@ -104,51 +126,48 @@ export default class Keyboard {
     localStorage.setItem('virtual-keyboard.lang', this.lang);
   }
 
-  // switch Caps and Shift
-  switchCase(code) {
+  // switch Key
+  switchKey(code, keyObject) {
     if (code === 'CapsLock') this.capsLockOn = !this.capsLockOn;
     if (code === 'ShiftLeft') this.ShiftLeftOn = !this.ShiftLeftOn;
-    if (code === 'ShiftRight') this.ShiftRight = !this.ShiftRight;
+    if (code === 'ShiftRight') this.ShiftRightOn = !this.ShiftRightOn;
+    if (code === 'ControlLeft') this.ControlLeftOn = !this.ControlLeftOn;
+    if (code === 'ControlRight') this.ControlRightOn = !this.ControlRightOn;
+    if (code === 'AltLeft') this.AltLeftOn = !this.AltLeftOn;
+    if (code === 'AltRight') this.AltRightOn = !this.AltRightOn;
+    keyObject.keyDOM.firstChild.classList.toggle('-active');
   }
 
-  // if any abc key was pressed, remove Shift down
-  clearShiftDown() {
-    this.ShiftLeftOn = false;
-    this.ShiftRight = false;
+  // if any key was pressed, remove Shift, Control or Alt down
+  clearKeyDown(code) {
+    this[`${code}LeftOn`] = false;
+    this[`${code}RightOn`] = false;
 
-    let shift = this.findKeyOnCode('ShiftLeft').keyDOM.firstChild;
-    shift.classList.remove('-active');
+    let key = this.findKeyOnCode(`${code}Left`).keyDOM.firstChild;
+    key.classList.remove('-active');
 
-    shift = this.findKeyOnCode('ShiftRight').keyDOM.firstChild;
-    shift.classList.remove('-active');
+    key = this.findKeyOnCode(`${code}Right`).keyDOM.firstChild;
+    key.classList.remove('-active');
   }
 
-  // update keyboard properties & render
-  update(code) {
-    if (code) {
-      const keyObject = this.findKeyOnCode(code);
+  hotKeyPressed(code) {
+    return (
+      (this.ShiftLeftOn && !(code === 'ShiftLeft')) ||
+      (this.ShiftRightOn && !(code === 'ShiftRight')) ||
+      (this.ControlLeftOn && !(code === 'ControlLeft')) ||
+      (this.ControlRightOn && !(code === 'ControlRight')) ||
+      (this.AltLeftOn && !(code === 'AltLeft')) ||
+      (this.AltRightOn && !(code === 'AltRight'))
+    );
+  }
 
-      if (keyObject) {
-        if (keyObject.type === 'abc') {
-          // handler todo
-
-          // if any abc key was pressed, remove Shift down
-          if (this.ShiftLeftOn || this.ShiftRightOn) {
-            this.clearShiftDown();
-            this.updateKeysInDOM();
-          }
-        }
-        // switch to next language in langArray
-        else if (code === 'Lang') {
-          this.switchLanguage();
-          this.updateKeysInDOM();
-        }
-        // switch Caps or Shift
-        else if (code === 'CapsLock' || code === 'ShiftLeft' || code === 'ShiftRight') {
-          this.switchCase(code);
-          this.updateKeysInDOM();
-        }
-      }
-    }
+  getHotKey(code) {
+    if (this.ShiftLeftOn) return `ShiftLeft + ${code}`;
+    if (this.ShiftRightOn) return `ShiftRight + ${code}`;
+    if (this.ControlLeftOn) return `ControlLef + ${code}`;
+    if (this.ControlRightOn) return `ControlRight + ${code}`;
+    if (this.AltLeftOn) return `AltLeft + ${code}`;
+    if (this.AltRightOn) return `AltRight + ${code}`;
+    return 'none';
   }
 }

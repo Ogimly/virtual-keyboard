@@ -23,6 +23,12 @@ h1 {
     text-align: center;
 }
 
+p {
+    padding: 0;
+    @include text-button($color-primary);
+    text-align: center;
+}
+
 textarea {
     width: $width-content;
     @include text-paragraph-l($color-primary);
