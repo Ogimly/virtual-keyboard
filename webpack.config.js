@@ -33,9 +33,9 @@ module.exports = ({ development }) => ({
   output: {
     path: path.resolve(__dirname, 'dist'),
 
-    filename: '[name].[contenthash].js',
+    filename: '[name].js',
 
-    assetModuleFilename: 'assets/[hash][ext]',
+    assetModuleFilename: 'assets/[name][ext]',
   },
 
   module: {
@@ -71,7 +71,7 @@ module.exports = ({ development }) => ({
     }),
 
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
+      filename: '[name].css',
     }),
 
     new CopyPlugin({
