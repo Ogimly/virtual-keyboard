@@ -6,7 +6,7 @@ import Keyboard from './scripts/KeyboardClass';
 // -----------------------------------------------------------------------------
 // global const & data
 // KEYS_DATA - array of abc & key properties
-import KEYS_DATA from './scripts/KeysData';
+import { KEYS_DATA, EGG_DATA } from './scripts/KeysData';
 // KEYBOARD - object of class Keyboard - keys array & keyboard properties
 const KEYBOARD = new Keyboard(KEYS_DATA);
 // keyboardWrapper - DOM element for keyboard
@@ -17,6 +17,17 @@ let inputText = null;
 let hotKey = null;
 // KeyPressed - what key was pressed in keyboard with mouse
 let KeyPressed = null;
+
+// -----------------------------------------------------------------------------
+const checkEasterEgg = () => {
+  let res = '';
+  const str = inputText.value.toUpperCase();
+  EGG_DATA.forEach((el) => {
+    const key = el.key.toUpperCase();
+    if (str.slice(str.length - key.length) === key) res = el.text;
+  });
+  return res;
+};
 // -----------------------------------------------------------------------------
 // prepare main html
 const addMainToDOM = () => {
@@ -185,6 +196,16 @@ const keyPressHandler = (code) => {
       // ArrowUp, ArrowDown - TODO || !TODO
       // abc & other
       else {
+        inputText.value = textBeforeCursor + text + textAfterCursor;
+        cursorStart =
+          cursorStart === inputText.value.length - 1
+            ? inputText.value.length // end of line
+            : cursorStart + text.length;
+        cursorEnd = cursorStart;
+      }
+
+      text = checkEasterEgg();
+      if (text) {
         inputText.value = textBeforeCursor + text + textAfterCursor;
         cursorStart =
           cursorStart === inputText.value.length - 1

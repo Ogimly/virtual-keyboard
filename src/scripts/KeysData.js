@@ -79,4 +79,10 @@ const KEYS_DATA = [
   ],
 ];
 
-export default KEYS_DATA;
+const EGG_DATA = [
+  { key: 'русский ', text: ' военный корабль таки да' },
+  { key: 'а я вам ', text: ' сейчас покажу откуда на Беларусь готовилось нападение' },
+  { key: 'Слава Украине! ', text: ' Героям слава!' },
+];
+
+export { KEYS_DATA, EGG_DATA };
