@@ -272,6 +272,11 @@ const onKeyboardDown = (event) => {
   }
 
   if (keyDown) addPressed(keyDown);
+
+  if (code === 'CapsLock' && KEYBOARD.userOS === 'Mac') {
+    // However, a limitation of the macOS event model causes Caps Lock to dispatch only the keydown event
+    window.setTimeout(() => keyDown.firstChild.classList.remove('-pressed'), 300);
+  }
 };
 const onKeyboardUp = (event) => {
   const { code } = event;

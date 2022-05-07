@@ -22,6 +22,9 @@ export default class Keyboard {
 
     this.AltLeftOn = false;
     this.AltRightOn = false;
+
+    // returns a string identifying the platform on which the user’s browser is running
+    this.userOS = `${navigator.platform}`.substring(0, 3);
   }
 
   // array of Key class object from data
