@@ -83,9 +83,9 @@ module.exports = ({ development }) => ({
       ],
     }),
 
-    new CleanWebpackPlugin({
-      cleanStaleWebpackAssets: false,
-    }),
+    // new CleanWebpackPlugin({
+    //   cleanStaleWebpackAssets: false,
+    // }),
   ],
 
   ...devServer(development),
