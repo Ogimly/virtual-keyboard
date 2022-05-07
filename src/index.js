@@ -13,6 +13,8 @@ const KEYBOARD = new Keyboard(KEYS_DATA);
 let keyboardWrapper = null;
 // inputText - DOM element for textarea
 let inputText = null;
+// hotKey - DOM element for output pressed hot key
+let hotKey = null;
 // KeyPressed - what key was pressed in keyboard with mouse
 let KeyPressed = null;
 // -----------------------------------------------------------------------------
@@ -29,16 +31,22 @@ const addMainToDOM = () => {
   inputText.rows = 6;
   main.append(inputText);
 
+  hotKey = document.createElement('p');
+  hotKey.classList.add('-hidden');
+  hotKey.textContent = 'hot key';
+  main.append(hotKey);
+
   keyboardWrapper = document.createElement('div');
   keyboardWrapper.classList.add('keyboard_wrapper');
   main.append(keyboardWrapper);
 
   const p = document.createElement('p');
-  p.textContent = 'Change language <Shift + Control>';
+  p.textContent = 'Change language <Shift + Ctrl>';
   main.append(p);
 
   document.body.append(main);
 };
+
 // -----------------------------------------------------------------------------
 // handler for key press (main handler)
 const keyPressHandler = (code) => {
@@ -60,6 +68,18 @@ const keyPressHandler = (code) => {
         // upper case
         text = keyObject.keyDOM.firstChild.textContent;
       } else if (
+        // selection Shift + ArrowLeft
+        (KEYBOARD.ShiftLeftOn || KEYBOARD.ShiftRightOn) &&
+        code === 'ArrowLeft'
+      ) {
+        text = '←←';
+      } else if (
+        // selection Shift + ArrowRight
+        (KEYBOARD.ShiftLeftOn || KEYBOARD.ShiftRightOn) &&
+        code === 'ArrowRight'
+      ) {
+        text = '→→';
+      } else if (
         // switch to next language in langArray
         ((KEYBOARD.ShiftLeftOn || KEYBOARD.ShiftRightOn) &&
           (code === 'ControlLeft' || code === 'ControlRight')) ||
@@ -70,7 +90,12 @@ const keyPressHandler = (code) => {
         KEYBOARD.updateKeysInDOM();
       } else {
         // output hot key
-        text = `<${KEYBOARD.getHotKey(code)}>`;
+        hotKey.textContent = `<${KEYBOARD.getHotKey(code)}> was pressed`;
+        text = '';
+        hotKey.classList.remove('-hidden');
+        window.setTimeout(() => {
+          hotKey.classList.add('-hidden');
+        }, 3000);
       }
     } else if (code === 'Lang') {
       // switch to next language in langArray
@@ -136,10 +161,7 @@ const keyPressHandler = (code) => {
             ? 0 // start of line
             : cursorStart - 1;
         cursorEnd = cursorStart;
-      } else if (
-        text === '<ShiftLeft + ArrowLeft>' ||
-        text === '<ShiftRight + ArrowLeft>'
-      ) {
+      } else if (text === '←←') {
         cursorStart =
           cursorStart === 0
             ? 0 // start of line
@@ -153,10 +175,7 @@ const keyPressHandler = (code) => {
             ? inputText.value.length // end of line
             : cursorStart + 1;
         cursorEnd = cursorStart;
-      } else if (
-        text === '<ShiftLeft + ArrowRight>' ||
-        text === '<ShiftRight + ArrowRight>'
-      ) {
+      } else if (text === '→→') {
         cursorEnd =
           cursorEnd === inputText.value.length - 1
             ? inputText.value.length // end of line
