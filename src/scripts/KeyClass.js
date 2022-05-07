@@ -10,12 +10,13 @@ export default class Key {
     let { label: charArray } = arr;
 
     if (Array.isArray(charArray)) {
-      this.EN = { low: charArray[0], up: charArray[1] };
-      this.RU = { low: charArray[2], up: charArray[3] };
+      charArray.forEach((obj) => {
+        this[obj.lang] = { low: obj.low, up: obj.up, caps: obj.caps };
+      });
     } else {
       charArray = `${charArray}`;
-      this.EN = { low: charArray, up: charArray };
-      this.RU = { low: charArray, up: charArray };
+      this.EN = { low: charArray, up: charArray, caps: false };
+      this.RU = { low: charArray, up: charArray, caps: false };
     }
 
     this.keyDOM = null;
@@ -29,8 +30,6 @@ export default class Key {
 
     keyWrapper.setAttribute('data-id', this.id);
     keyWrapper.setAttribute('data-type', this.type);
-    // keyWrapper.setAttribute('data-row', this.row);
-    // keyWrapper.setAttribute('data-number', this.number);
 
     const char = this[language][caseStatus];
     keyWrapper.setAttribute('data-currentKey', char);
