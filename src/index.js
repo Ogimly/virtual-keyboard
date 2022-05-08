@@ -312,17 +312,18 @@ const onKeyboardDown = (event) => {
   }
 
   if (keyDown) addPressed(keyDown);
-
-  if (code === 'CapsLock' && KEYBOARD.userOS === 'Mac') {
-    // However, a limitation of the macOS event model causes Caps Lock to dispatch only the keydown event
-    window.setTimeout(() => keyDown.firstChild.classList.remove('-pressed'), 300);
-  }
 };
 const onKeyboardUp = (event) => {
   const { code } = event;
   const keyUp = document.querySelector(`.key_wrapper[data-id='${code}']`);
 
   if (keyUp) removePressed(keyUp);
+
+  if (code === 'CapsLock' && KEYBOARD.userOS === 'MAC') {
+    // Если на винде зажатие капса вызывает keydown, а отжатие - keyup, то на маке первое нажатие-отжатие вызывает keydown, а второе - keyup
+    KEYBOARD.clearCapsLockDown();
+    KEYBOARD.updateKeysInDOM();
+  }
 
   // need to remove press shifts
   if (code === 'ShiftLeft' || code === 'ShiftRight') {

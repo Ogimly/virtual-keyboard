@@ -24,7 +24,7 @@ export default class Keyboard {
     this.AltRightOn = false;
 
     // returns a string identifying the platform on which the user’s browser is running
-    this.userOS = `${navigator.platform}`.substring(0, 3);
+    this.userOS = `${navigator.platform}`.substring(0, 3).toUpperCase();
   }
 
   // array of Key class object from data
@@ -146,6 +146,14 @@ export default class Keyboard {
     key.classList.remove('-active');
 
     key = this.findKeyOnCode(`${code}Right`).keyDOM.firstChild;
+    key.classList.remove('-active');
+  }
+
+  // if any key was pressed, remove CapsLock down
+  clearCapsLockDown() {
+    this.capsLockOn = false;
+
+    const key = this.findKeyOnCode('CapsLock').keyDOM.firstChild;
     key.classList.remove('-active');
   }
 
