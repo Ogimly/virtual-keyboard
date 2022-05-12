@@ -68,6 +68,9 @@ const keyPressHandler = (code) => {
   const keyObject = KEYBOARD.findKeyOnCode(code);
 
   if (keyObject) {
+    const selection = window.getSelection();
+    let selectionOptions = {};
+
     let cursorStart = inputText.selectionStart;
     let cursorEnd = inputText.selectionEnd;
     const textBeforeCursor = inputText.value.substring(0, cursorStart);
@@ -83,13 +86,45 @@ const keyPressHandler = (code) => {
         (KEYBOARD.ShiftLeftOn || KEYBOARD.ShiftRightOn) &&
         code === 'ArrowLeft'
       ) {
-        text = '←←';
+        text = 'Arrow';
+        selectionOptions = {
+          alter: 'extend',
+          direction: 'backward',
+          granularity: 'Character',
+        };
       } else if (
         // selection Shift + ArrowRight
         (KEYBOARD.ShiftLeftOn || KEYBOARD.ShiftRightOn) &&
         code === 'ArrowRight'
       ) {
-        text = '→→';
+        text = 'Arrow';
+        selectionOptions = {
+          alter: 'extend',
+          direction: 'forward',
+          granularity: 'Character',
+        };
+      } else if (
+        // selection Shift + ArrowUp
+        (KEYBOARD.ShiftLeftOn || KEYBOARD.ShiftRightOn) &&
+        code === 'ArrowUp'
+      ) {
+        text = 'Arrow';
+        selectionOptions = {
+          alter: 'extend',
+          direction: 'backward',
+          granularity: 'Line',
+        };
+      } else if (
+        // selection Shift + ArrowDown
+        (KEYBOARD.ShiftLeftOn || KEYBOARD.ShiftRightOn) &&
+        code === 'ArrowDown'
+      ) {
+        text = 'Arrow';
+        selectionOptions = {
+          alter: 'extend',
+          direction: 'forward',
+          granularity: 'Line',
+        };
       } else if (
         // switch to next language in langArray
         ((KEYBOARD.ShiftLeftOn || KEYBOARD.ShiftRightOn) &&
@@ -133,13 +168,33 @@ const keyPressHandler = (code) => {
     } else if (code === 'Delete') {
       text = 'Delete';
     } else if (code === 'ArrowLeft') {
-      text = '←';
+      text = 'Arrow';
+      selectionOptions = {
+        alter: 'move',
+        direction: 'backward',
+        granularity: 'Character',
+      };
     } else if (code === 'ArrowRight') {
-      text = '→';
+      text = 'Arrow';
+      selectionOptions = {
+        alter: 'move',
+        direction: 'forward',
+        granularity: 'Character',
+      };
     } else if (code === 'ArrowUp') {
-      text = '↑';
+      text = 'Arrow';
+      selectionOptions = {
+        alter: 'move',
+        direction: 'backward',
+        granularity: 'Line',
+      };
     } else if (code === 'ArrowDown') {
-      text = '↓';
+      text = 'Arrow';
+      selectionOptions = {
+        alter: 'move',
+        direction: 'forward',
+        granularity: 'Line',
+      };
     }
 
     if (text) {
@@ -165,35 +220,17 @@ const keyPressHandler = (code) => {
           cursorEnd = cursorStart;
         }
       }
-      // ArrowLeft & selection
-      else if (text === '←') {
-        cursorStart =
-          cursorStart === 0
-            ? 0 // start of line
-            : cursorStart - 1;
-        cursorEnd = cursorStart;
-      } else if (text === '←←') {
-        cursorStart =
-          cursorStart === 0
-            ? 0 // start of line
-            : cursorStart - 1;
-        inputText.selectionDirection = 'backward';
+      // Arrows & selection
+      else if (text === 'Arrow') {
+        selection.modify(
+          selectionOptions.alter,
+          selectionOptions.direction,
+          selectionOptions.granularity
+        );
+
+        cursorStart = inputText.selectionStart;
+        cursorEnd = inputText.selectionEnd;
       }
-      // ArrowRight & selection
-      else if (text === '→') {
-        cursorStart =
-          cursorStart === inputText.value.length - 1
-            ? inputText.value.length // end of line
-            : cursorStart + 1;
-        cursorEnd = cursorStart;
-      } else if (text === '→→') {
-        cursorEnd =
-          cursorEnd === inputText.value.length - 1
-            ? inputText.value.length // end of line
-            : cursorEnd + 1;
-        inputText.selectionDirection = 'forward';
-      }
-      // ArrowUp, ArrowDown - TODO || !TODO
       // abc & other
       else {
         inputText.value = textBeforeCursor + text + textAfterCursor;
