@@ -1,0 +1,130 @@
+// -----------------------------------------------------------------------------
+// This file contains keyboard.
+// -----------------------------------------------------------------------------
+body {
+    background-color: $color-primary;
+}
+
+.wrapper {
+    position: absolute;
+    max-width: $width-content + $gap*4;
+    //margin: 0 auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0 $gap*2 $gap $gap*2;
+    border-radius: 20px;
+    background-color: $color-primary-light-3xl;
+}
+
+h1 {
+    padding: $gap;
+    @include text-logo-title($color-primary);
+    text-align: center;
+}
+
+p {
+    padding: 0;
+    @include text-button($color-primary);
+    text-align: center;
+    @extend %transition;
+}
+
+.-hidden {
+    opacity: 0;
+}
+
+textarea {
+    width: $width-content;
+    @include text-paragraph-l($color-primary);
+    border-radius: 10px;
+    border-style: none;
+    padding: $gap;
+
+    resize: none;
+    &:focus {
+        outline: none; 
+    }
+}
+
+.keyboard_wrapper {
+    border-radius: 10px;
+    background-color: $color-dark-s;
+    padding: $gap + $gap-half;
+    margin-top: $gap-half;
+
+    @include flex-vertical(center);
+    gap: $gap;
+}
+
+.keyboard_row {
+    @include flex-horizontal(center);
+    gap: $gap;
+}
+
+.key_wrapper {
+    @include size($height-button);
+}
+.-large {
+    width: $height-button + $height-button + $gap;
+}
+.-midi {
+    width: $height-button * 1.5 + $gap-half;
+}
+.-small {
+    width: $height-button;
+}
+.-space {
+    width: $height-button *6 + $gap*5;
+}
+
+.key {
+    height: $height-button - $shadow;
+    border-radius: 5px;
+    padding: $gap-half;
+    box-shadow: 0px 0px  $shadow*3 $shadow $color-primary-light;
+
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+
+    @include text-button($color-dark-2xl);
+    user-select: none;
+
+    @extend %transition;
+
+    &:hover {
+        box-shadow: 0px 0px  $shadow*3 $shadow $color-primary-light-3xl;
+        cursor: pointer;
+    }
+
+    &_abc {
+        background-color: $color-light-xl;
+    }
+
+    &_space {
+        background-color: $color-light-xl;
+    }
+
+    &_arrow {
+        background-color: $color-light-s;
+    }
+
+    &_ctrl {
+        background-color: $color-light-s;
+        justify-content: flex-start;
+    }
+
+}
+.-active {
+    box-shadow: 0px 0px  $shadow*3 $shadow $color-primary-light-3xl;
+    margin: $shadow;
+
+    color: $color-primary-light;
+}
+.-pressed {
+    box-shadow: 0px 0px 0px;
+    margin: $shadow;
+
+    color: $color-primary-light;
+}

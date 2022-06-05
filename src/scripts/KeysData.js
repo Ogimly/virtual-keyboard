@@ -1,0 +1,88 @@
+// -----------------------------------------------------------------------------
+// KEYS_DATA - array of abc & key properties
+// -----------------------------------------------------------------------------
+// prettier-ignore
+const KEYS_DATA = [
+  [
+    {type: 'abc',   id: 'Backquote',      size: 'mini',   label: [ {lang: 'EN', low:'`', up: '~', caps: false}, {lang: 'RU', low:'ё', up: 'Ё', caps: true}  ]},
+    {type: 'abc',   id: 'Digit2',         size: 'mini',   label: [ {lang: 'EN', low:'2', up: '@', caps: false}, {lang: 'RU', low:'2', up: '"', caps: false} ]},
+    {type: 'abc',   id: 'Digit3',         size: 'mini',   label: [ {lang: 'EN', low:'3', up: '#', caps: false}, {lang: 'RU', low:'3', up: '№', caps: false} ]},
+    {type: 'abc',   id: 'Digit4',         size: 'mini',   label: [ {lang: 'EN', low:'4', up: '$', caps: false}, {lang: 'RU', low:'4', up: ';', caps: false} ]},
+    {type: 'abc',   id: 'Digit1',         size: 'mini',   label: [ {lang: 'EN', low:'1', up: '!', caps: false}, {lang: 'RU', low:'1', up: '!', caps: false} ]},
+    {type: 'abc',   id: 'Digit5',         size: 'mini',   label: [ {lang: 'EN', low:'5', up: '%', caps: false}, {lang: 'RU', low:'5', up: '%', caps: false} ]},
+    {type: 'abc',   id: 'Digit6',         size: 'mini',   label: [ {lang: 'EN', low:'6', up: '^', caps: false}, {lang: 'RU', low:'6', up: ':', caps: false} ]},
+    {type: 'abc',   id: 'Digit7',         size: 'mini',   label: [ {lang: 'EN', low:'7', up: '&', caps: false}, {lang: 'RU', low:'7', up: '?', caps: false} ]},
+    {type: 'abc',   id: 'Digit8',         size: 'mini',   label: [ {lang: 'EN', low:'8', up: '*', caps: false}, {lang: 'RU', low:'8', up: '*', caps: false} ]},
+    {type: 'abc',   id: 'Digit9',         size: 'mini',   label: [ {lang: 'EN', low:'9', up: '(', caps: false}, {lang: 'RU', low:'9', up: '(', caps: false} ]},
+    {type: 'abc',   id: 'Digit0',         size: 'mini',   label: [ {lang: 'EN', low:'0', up: ')', caps: false}, {lang: 'RU', low:'0', up: ')', caps: false} ]},
+    {type: 'abc',   id: 'Minus',          size: 'mini',   label: [ {lang: 'EN', low:'-', up: '_', caps: false}, {lang: 'RU', low:'-', up: '_', caps: false} ]},
+    {type: 'abc',   id: 'Equal',          size: 'mini',   label: [ {lang: 'EN', low:'=', up: '+', caps: false}, {lang: 'RU', low:'=', up: '+', caps: false} ]},
+    {type: 'ctrl',  id: 'Backspace',      size: 'large',  label: 'Backspace'},
+  ],
+  [
+    {type: 'ctrl',  id: 'Tab',            size: 'midi',   label: 'Tab'},
+    {type: 'abc',   id: 'KeyQ',           size: 'mini',   label: [ {lang: 'EN', low:'q', up: 'Q', caps: true},  {lang: 'RU', low:'й', up: 'Й', caps: true} ]},
+    {type: 'abc',   id: 'KeyW',           size: 'mini',   label: [ {lang: 'EN', low:'w', up: 'W', caps: true},  {lang: 'RU', low:'ц', up: 'Ц', caps: true} ]},
+    {type: 'abc',   id: 'KeyE',           size: 'mini',   label: [ {lang: 'EN', low:'e', up: 'E', caps: true},  {lang: 'RU', low:'у', up: 'У', caps: true} ]},
+    {type: 'abc',   id: 'KeyR',           size: 'mini',   label: [ {lang: 'EN', low:'r', up: 'R', caps: true},  {lang: 'RU', low:'к', up: 'К', caps: true} ]},
+    {type: 'abc',   id: 'KeyT',           size: 'mini',   label: [ {lang: 'EN', low:'t', up: 'T', caps: true},  {lang: 'RU', low:'е', up: 'Е', caps: true} ]},
+    {type: 'abc',   id: 'KeyY',           size: 'mini',   label: [ {lang: 'EN', low:'y', up: 'Y', caps: true},  {lang: 'RU', low:'н', up: 'Н', caps: true} ]},
+    {type: 'abc',   id: 'KeyU',           size: 'mini',   label: [ {lang: 'EN', low:'u', up: 'U', caps: true},  {lang: 'RU', low:'г', up: 'Г', caps: true} ]},
+    {type: 'abc',   id: 'KeyI',           size: 'mini',   label: [ {lang: 'EN', low:'i', up: 'I', caps: true},  {lang: 'RU', low:'ш', up: 'Ш', caps: true} ]},
+    {type: 'abc',   id: 'KeyO',           size: 'mini',   label: [ {lang: 'EN', low:'o', up: 'O', caps: true},  {lang: 'RU', low:'щ', up: 'Щ', caps: true} ]},
+    {type: 'abc',   id: 'KeyP',           size: 'mini',   label: [ {lang: 'EN', low:'p', up: 'P', caps: true},  {lang: 'RU', low:'з', up: 'З', caps: true} ]},
+    {type: 'abc',   id: 'BracketLeft',    size: 'mini',   label: [ {lang: 'EN', low:'[', up: '{', caps: false}, {lang: 'RU', low:'х', up: 'Х', caps: true} ]},
+    {type: 'abc',   id: 'BracketRight',   size: 'mini',   label: [ {lang: 'EN', low:']', up: '}', caps: false}, {lang: 'RU', low:'ъ', up: 'Ъ', caps: true} ]},
+    {type: 'ctrl',  id: 'Delete',         size: 'midi',   label: 'Delete'},
+  ],
+  [
+    {type: 'ctrl',  id: 'CapsLock',       size: 'large',  label: 'CapsLock'},
+    {type: 'abc',   id: 'KeyA',           size: 'mini',   label: [ {lang: 'EN', low:'a', up: 'A', caps: true},  {lang: 'RU', low:'ф', up: 'Ф', caps: true} ]},
+    {type: 'abc',   id: 'KeyS',           size: 'mini',   label: [ {lang: 'EN', low:'s', up: 'S', caps: true},  {lang: 'RU', low:'ы', up: 'Ы', caps: true} ]},
+    {type: 'abc',   id: 'KeyD',           size: 'mini',   label: [ {lang: 'EN', low:'d', up: 'D', caps: true},  {lang: 'RU', low:'в', up: 'В', caps: true} ]},
+    {type: 'abc',   id: 'KeyF',           size: 'mini',   label: [ {lang: 'EN', low:'f', up: 'F', caps: true},  {lang: 'RU', low:'а', up: 'А', caps: true} ]},
+    {type: 'abc',   id: 'KeyG',           size: 'mini',   label: [ {lang: 'EN', low:'g', up: 'G', caps: true},  {lang: 'RU', low:'п', up: 'П', caps: true} ]},
+    {type: 'abc',   id: 'KeyH',           size: 'mini',   label: [ {lang: 'EN', low:'h', up: 'H', caps: true},  {lang: 'RU', low:'р', up: 'Р', caps: true} ]},
+    {type: 'abc',   id: 'KeyJ',           size: 'mini',   label: [ {lang: 'EN', low:'j', up: 'J', caps: true},  {lang: 'RU', low:'о', up: 'О', caps: true} ]},
+    {type: 'abc',   id: 'KeyK',           size: 'mini',   label: [ {lang: 'EN', low:'k', up: 'K', caps: true},  {lang: 'RU', low:'л', up: 'Л', caps: true} ]},
+    {type: 'abc',   id: 'KeyL',           size: 'mini',   label: [ {lang: 'EN', low:'l', up: 'L', caps: true},  {lang: 'RU', low:'д', up: 'Д', caps: true} ]},
+    {type: 'abc',   id: 'Semicolon',      size: 'mini',   label: [ {lang: 'EN', low:';', up: ':', caps: false}, {lang: 'RU', low:'ж', up: 'Ж', caps: true} ]},
+    {type: 'abc',   id: 'Quote',          size: 'mini',   label: [ {lang: 'EN', low:"'", up: '"', caps: false}, {lang: 'RU', low:'э', up: 'Э', caps: true} ]},
+    {type: 'ctrl',  id: 'Enter',          size: 'large',  label: 'Enter'},
+  ],
+  [
+    {type: 'ctrl',  id: 'ShiftLeft',      size: 'midi',   label: 'Shift'},
+    {type: 'abc',   id: 'Backslash',      size: 'mini',   label: [ {lang: 'EN', low:'\\', up: '|', caps: false}, {lang: 'RU', low:'\\', up: '/', caps: false} ]},
+    {type: 'abc',   id: 'KeyZ',           size: 'mini',   label: [ {lang: 'EN', low:'z', up: 'Z', caps: true},  {lang: 'RU', low:'я', up: 'Я', caps: true}  ]},
+    {type: 'abc',   id: 'KeyX',           size: 'mini',   label: [ {lang: 'EN', low:'x', up: 'X', caps: true},  {lang: 'RU', low:'ч', up: 'Ч', caps: true}  ]},
+    {type: 'abc',   id: 'KeyC',           size: 'mini',   label: [ {lang: 'EN', low:'c', up: 'C', caps: true},  {lang: 'RU', low:'с', up: 'С', caps: true}  ]},
+    {type: 'abc',   id: 'KeyV',           size: 'mini',   label: [ {lang: 'EN', low:'v', up: 'V', caps: true},  {lang: 'RU', low:'м', up: 'М', caps: true}  ]},
+    {type: 'abc',   id: 'KeyB',           size: 'mini',   label: [ {lang: 'EN', low:'b', up: 'B', caps: true},  {lang: 'RU', low:'и', up: 'И', caps: true}  ]},
+    {type: 'abc',   id: 'KeyN',           size: 'mini',   label: [ {lang: 'EN', low:'n', up: 'N', caps: true},  {lang: 'RU', low:'т', up: 'Т', caps: true}  ]},
+    {type: 'abc',   id: 'KeyM',           size: 'mini',   label: [ {lang: 'EN', low:'m', up: 'M', caps: true},  {lang: 'RU', low:'ь', up: 'Ь', caps: true}  ]},
+    {type: 'abc',   id: 'Comma',          size: 'mini',   label: [ {lang: 'EN', low:',', up: ',', caps: false}, {lang: 'RU', low:'б', up: 'Б', caps: true}  ]},
+    {type: 'abc',   id: 'Period',         size: 'mini',   label: [ {lang: 'EN', low:'.', up: '.', caps: false}, {lang: 'RU', low:'ю', up: 'Ю', caps: true}  ]},
+    {type: 'abc',   id: 'Slash',          size: 'mini',   label: [ {lang: 'EN', low:'/', up: '?', caps: false}, {lang: 'RU', low:'.', up: ',', caps: false} ]},
+    {type: 'arrow', id: 'ArrowUp',        size: 'mini',   label: '↑'},
+    {type: 'ctrl',  id: 'ShiftRight',     size: 'midi',   label: 'Shift'},
+  ],
+  [
+    {type: 'ctrl',  id: 'ControlLeft',    size: 'mini',   label: 'Ctrl'},
+    {type: 'ctrl',  id: 'Lang',           size: 'mini',   label: [ {lang: 'EN', low:'EN', up: 'EN', caps: true}, {lang: 'RU', low:'RU', up: 'RU', caps: false} ]},
+    {type: 'ctrl',  id: 'AltLeft',        size: 'mini',   label: 'Alt'},
+    {type: 'abc',   id: 'Space',          size: 'space',  label: ' '},
+    {type: 'ctrl',  id: 'AltRight',       size: 'mini',   label: 'Alt'},
+    {type: 'ctrl',  id: 'ControlRight',   size: 'mini',   label: 'Ctrl'},
+    {type: 'arrow', id: 'ArrowLeft',      size: 'mini',   label: '←'},
+    {type: 'arrow', id: 'ArrowDown',      size: 'mini',   label: '↓'},
+    {type: 'arrow', id: 'ArrowRight',     size: 'mini',   label: '→'},
+  ],
+];
+
+const EGG_DATA = [
+  { key: 'русский ', text: ' военный корабль таки да' },
+  { key: 'а я вам ', text: ' сейчас покажу откуда на Беларусь готовилось нападение' },
+  { key: 'Слава Украине! ', text: ' Героям слава!' },
+];
+
+export { KEYS_DATA, EGG_DATA };
