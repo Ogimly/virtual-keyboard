@@ -40,6 +40,7 @@ const addMainToDOM = () => {
 
   inputText = document.createElement('textarea');
   inputText.rows = 6;
+  inputText.placeholder = 'Change language <Ctrl + Shift>'
   main.append(inputText);
 
   hotKey = document.createElement('p');
@@ -52,7 +53,7 @@ const addMainToDOM = () => {
   main.append(keyboardWrapper);
 
   const p = document.createElement('p');
-  p.textContent = 'Change language <Shift + Ctrl>';
+  p.textContent = 'Change language <Ctrl + Shift>';
   main.append(p);
 
   document.body.append(main);
